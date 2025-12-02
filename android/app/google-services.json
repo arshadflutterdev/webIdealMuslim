@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "214791865355",
+    "project_id": "muslim-693c4",
+    "storage_bucket": "muslim-693c4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214791865355:android:32b57c8f69faa8dbfc330e",
+        "android_client_info": {
+          "package_name": "com.example.tasbeeh"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSaXfDJFD8kN8MWKlPcSHvwUostLu6Phk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
