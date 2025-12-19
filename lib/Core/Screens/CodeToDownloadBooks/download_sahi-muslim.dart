@@ -20,7 +20,7 @@ class DownloadSahimuslim {
         final chaptersNo = hadiths["chapterNumber"];
         final hadithresponse = await http.get(
           Uri.parse(
-            "https://hadithapi.com/api/hadiths/?book=sahih-muslim&apiKey=%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte=$chaptersNo&apikey=$apiKey",
+            "https://hadithapi.com/api/hadiths/?book=sahih-muslim&chapter=$chaptersNo&apiKey=$apiKey",
           ),
         );
         if (hadithresponse.statusCode == 200) {
