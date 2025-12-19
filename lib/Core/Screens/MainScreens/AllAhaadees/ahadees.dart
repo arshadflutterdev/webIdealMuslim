@@ -7,6 +7,7 @@ import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SunanAn
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Abu_Dawood/Show_details/chapterdetails.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Ibn_e_Majah/ShowDetails/majah_chapter_details.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_chapter_details.dart';
+import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/downloadbook.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SunanAnNasai/ShowDetails/sunan_chapters.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Show_details/chapterdetails.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/ShowDetails/majah_chapter_details.dart';
@@ -17,6 +18,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Muslim/Data/Models/ahadeesmodel.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/sahibukhari.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahih_muslim_chapters.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class Ahadees extends StatefulWidget {
   const Ahadees({super.key});
@@ -31,11 +34,20 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
   bool isLoading = true;
   bool hasError = false;
 
+  Future<void> checkIfDownloaded() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File("${dir.path}/sahi-bukhari.json");
+    setState(() {
+      isDownloaded = file.existsSync();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 2, vsync: this);
     loadBooks();
+    checkIfDownloaded();
   }
 
   /// First try to load from SharedPreferences, if not found then fetch from API
@@ -107,7 +119,9 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
     Color(0xFF540863),
     Color(0xFFB87C4C),
   ];
-
+  //for downloading
+  bool isDownloaded = false;
+  bool isDownloading = false;
   Map<String, String> urduBookNames = {
     "sahih-bukhari": "صحیح بخاری",
     "sahih-muslim": "صحیح مسلم",
@@ -119,6 +133,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
     return WillPopScope(
@@ -261,10 +276,93 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                           }
                                         : null,
                                     trailing: book != null
-                                        ? Text(
-                                            book.chaptersCount ?? "",
-                                            style: const TextStyle(
-                                              fontSize: 20,
+                                        ? SizedBox(
+                                            width: width * 0.20,
+
+                                            child: Row(
+                                              children: [
+                                                IconButton(
+                                                  onPressed:
+                                                      isDownloading ||
+                                                          isDownloaded
+                                                      ? null
+                                                      : () async {
+                                                          setState(
+                                                            () =>
+                                                                isDownloading =
+                                                                    true,
+                                                          );
+
+                                                          try {
+                                                            // Download Sahi Bukhari
+                                                            await DownloadSahiBukhar()
+                                                                .downloadbook();
+
+                                                            // Check if download succeeded
+                                                            final dir =
+                                                                await getApplicationDocumentsDirectory();
+                                                            final file = File(
+                                                              "${dir.path}/sahi-bukhari.json",
+                                                            );
+
+                                                            setState(() {
+                                                              isDownloaded = file
+                                                                  .existsSync();
+                                                              isDownloading =
+                                                                  false;
+                                                            });
+
+                                                            if (isDownloaded) {
+                                                              ScaffoldMessenger.of(
+                                                                context,
+                                                              ).showSnackBar(
+                                                                SnackBar(
+                                                                  content: Text(
+                                                                    "Sahi Bukhari Downloaded Successfully",
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }
+                                                          } catch (e) {
+                                                            setState(
+                                                              () =>
+                                                                  isDownloading =
+                                                                      false,
+                                                            );
+                                                            print(
+                                                              "Download error: $e",
+                                                            );
+                                                          }
+                                                        },
+                                                  icon: isDownloading
+                                                      ? SizedBox(
+                                                          width: 24,
+                                                          height: 24,
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                                color: Colors
+                                                                    .green,
+                                                                strokeWidth: 2,
+                                                              ),
+                                                        )
+                                                      : isDownloaded
+                                                      ? Icon(
+                                                          Icons.check,
+                                                          color: Colors.green,
+                                                        )
+                                                      : Icon(
+                                                          Icons.download,
+                                                          color: Colors.black54,
+                                                        ),
+                                                ),
+
+                                                Text(
+                                                  book.chaptersCount ?? "",
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           )
                                         : null,
