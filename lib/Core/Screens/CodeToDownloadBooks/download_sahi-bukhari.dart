@@ -39,6 +39,7 @@ class DownloadSahiBukhar {
       //save all files to locally
       final dir = await getApplicationDocumentsDirectory();
       final file = File("${dir.path}/sahih-bukhari.json");
+
       await file.writeAsString(
         jsonEncode({"book": "sahih-bukhari", "chapters": chapterlist}),
       );

@@ -345,6 +345,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                     color: Colors.black54,
                                                   ),
                                           ),
+
                                           Text(
                                             book.chaptersCount ?? "",
                                             style: const TextStyle(
@@ -447,14 +448,52 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                         );
                                       }
                                     },
-                                    trailing: Text(
-                                      urduBookNames[slug] ??
-                                          book.bookName ??
-                                          "",
-                                      style: TextStyle(
-                                        fontFamily: AppFonts.urdufont,
-                                        fontSize: 22,
-                                        color: namecolors[index],
+                                    trailing: SizedBox(
+                                      width: width * 0.20,
+                                      child: Row(
+                                        children: [
+                                          IconButton(
+                                            onPressed:
+                                                isDownloadingMap[slug] ==
+                                                        true ||
+                                                    isDownloadedMap[slug] ==
+                                                        true
+                                                ? null
+                                                : () {
+                                                    downloadBook(slug);
+                                                  },
+                                            icon: isDownloadingMap[slug] == true
+                                                ? SizedBox(
+                                                    width: 24,
+                                                    height: 24,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                          color: Colors.green,
+                                                          strokeWidth: 2,
+                                                        ),
+                                                  )
+                                                : isDownloadedMap[slug] == true
+                                                ? Icon(
+                                                    Icons.check,
+                                                    color: Colors.green,
+                                                  )
+                                                : Icon(
+                                                    Icons.download,
+                                                    color: Colors.black54,
+                                                  ),
+                                          ),
+
+                                          Text(
+                                            urduBookNames[slug] ??
+                                                book.bookName ??
+                                                "",
+                                            style: TextStyle(
+                                              fontFamily: AppFonts.urdufont,
+                                              fontSize: 22,
+                                              color: namecolors[index],
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     title: Text(
