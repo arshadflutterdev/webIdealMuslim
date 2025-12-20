@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahiBukhari/hadith_details_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
@@ -27,7 +28,8 @@ class DownloadSunanAbuDawood {
           );
           if (hadithresponse.statusCode == 200) {
             final hadithdecode = jsonDecode(hadithresponse.body);
-            hadiths["hadiths"] = hadithdecode["hadiths"]["data"];
+            final hadithDetails = HadithDetails.fromJson(hadithdecode);
+            hadiths["hadits"] = hadithDetails.hadiths?.toJson();
           } else {
             throw Exception("failed to fetch details");
           }

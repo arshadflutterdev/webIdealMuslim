@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadith_details_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
@@ -27,7 +28,8 @@ class DownloadSunanAnnasai {
           );
           if (hadithresponse.statusCode == 200) {
             final haditdecode = jsonDecode(hadithresponse.body);
-            hadiths["hadiths"] = haditdecode["hadiths"]["data"] ?? [];
+            final hadithdetails = HadithDetails.fromJson(haditdecode);
+            hadiths["hadiths"] = hadithdetails.hadiths?.toJson();
           } else {
             throw Exception("Failed to fetch error");
           }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahiBukhari/hadith_details_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
@@ -31,7 +32,8 @@ class DownloadSahiBukhar {
         );
         if (hadithresponse.statusCode == 200) {
           final hadithdata = jsonDecode(hadithresponse.body);
-          hadith["hadiths"] = hadithdata["hadiths"]["data"];
+          final hadithdetails = HadithDetails.fromJson(hadithdata);
+          hadith["hadiths"] = hadithdetails.hadiths?.toJson();
         } else {
           print("failed to fetch all hadith data");
         }

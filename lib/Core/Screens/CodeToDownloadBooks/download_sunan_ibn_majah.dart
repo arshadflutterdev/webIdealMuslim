@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahiBukhari/hadith_details_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
@@ -29,7 +30,8 @@ class DownloadSunanIbnMajah {
         );
         if (hadithResponse.statusCode == 200) {
           final hadithDecode = jsonDecode(hadithResponse.body);
-          chapter["hadiths"] = hadithDecode["hadiths"]["data"];
+          final hadithdetails = HadithDetails.fromJson(hadithDecode);
+          chapter["hadiths"] = hadithdetails.hadiths?.toJson();
         }
       }
       final dir = await getApplicationDocumentsDirectory();
