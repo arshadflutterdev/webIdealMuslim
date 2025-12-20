@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahiBukhari/hadithDetails.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadithDetails.dart';
@@ -25,6 +27,37 @@ class _BukhariUrduState extends State<BukhariUrdu> {
   List<Chapters> filteredlist = [];
   bool isLoading = true;
   bool hasError = false;
+  Future<void> loadofflinechapters() async {
+    setState(() {
+      isLoading = true;
+      hasError = false;
+    });
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File("${dir.path}/sahih-bukhari.json");
+      if (file.existsSync()) {
+        final fileContent = await file.readAsString();
+        final jsonData = jsonDecode(fileContent);
+        final chapterData = Sahimuslimchapterlist.fromJson(jsonData);
+        setState(() {
+          chaptersList = chapterData.chapters ?? [];
+
+          print(chaptersList);
+          filteredlist = chaptersList;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          hasError = true;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      hasError = true;
+      isLoading = false;
+    }
+  }
+
   final TextEditingController _searchcontroller = TextEditingController();
   Future chaptersearching(String query) async {
     setState(() {
@@ -40,72 +73,72 @@ class _BukhariUrduState extends State<BukhariUrdu> {
   @override
   void initState() {
     super.initState();
-    loadChapters();
+    // loadChapters();
   }
 
   /// Load from SharedPreferences first, then API if not cached
-  Future<void> loadChapters() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? cachedData = prefs.getString('bukhari_chapters');
+  // Future<void> loadChapters() async {
+  //   try {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     final String? cachedData = prefs.getString('bukhari_chapters');
 
-      if (cachedData != null) {
-        // ✅ Load cached chapters
-        final Map<String, dynamic> jsonMap = jsonDecode(cachedData);
-        final localChapters = Sahimuslimchapterlist.fromJson(jsonMap);
-        setState(() {
-          chaptersList = localChapters.chapters ?? [];
-          filteredlist = chaptersList;
-          isLoading = false;
-        });
-      } else {
-        // ✅ First time → fetch from API and save
-        await fetchAndCacheChapters();
-      }
-    } catch (e) {
-      setState(() {
-        hasError = true;
-        isLoading = false;
-      });
-    }
-  }
+  //     if (cachedData != null) {
+  //       // ✅ Load cached chapters
+  //       final Map<String, dynamic> jsonMap = jsonDecode(cachedData);
+  //       final localChapters = Sahimuslimchapterlist.fromJson(jsonMap);
+  //       setState(() {
+  //         chaptersList = localChapters.chapters ?? [];
+  //         filteredlist = chaptersList;
+  //         isLoading = false;
+  //       });
+  //     } else {
+  //       // ✅ First time → fetch from API and save
+  //       await fetchAndCacheChapters();
+  //     }
+  //   } catch (e) {
+  //     setState(() {
+  //       hasError = true;
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 
   /// Fetch from API and store in SharedPreferences
-  Future<void> fetchAndCacheChapters() async {
-    try {
-      final response = await http.get(
-        Uri.parse(
-          "https://hadithapi.com/api/sahih-bukhari/chapters?apiKey=%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte",
-        ),
-      );
+  // Future<void> fetchAndCacheChapters() async {
+  //   try {
+  //     final response = await http.get(
+  //       Uri.parse(
+  //         "https://hadithapi.com/api/sahih-bukhari/chapters?apiKey=%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte",
+  //       ),
+  //     );
 
-      if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        final chaptersData = Sahimuslimchapterlist.fromJson(jsonData);
+  //     if (response.statusCode == 200) {
+  //       final jsonData = jsonDecode(response.body);
+  //       final chaptersData = Sahimuslimchapterlist.fromJson(jsonData);
 
-        // ✅ Save full JSON in SharedPreferences
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('bukhari_chapters', jsonEncode(jsonData));
+  //       // ✅ Save full JSON in SharedPreferences
+  //       final prefs = await SharedPreferences.getInstance();
+  //       await prefs.setString('bukhari_chapters', jsonEncode(jsonData));
 
-        setState(() {
-          chaptersList = chaptersData.chapters ?? [];
-          filteredlist = chaptersList;
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          hasError = true;
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        hasError = true;
-        isLoading = false;
-      });
-    }
-  }
+  //       setState(() {
+  //         chaptersList = chaptersData.chapters ?? [];
+  //         filteredlist = chaptersList;
+  //         isLoading = false;
+  //       });
+  //     } else {
+  //       setState(() {
+  //         hasError = true;
+  //         isLoading = false;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     if (!mounted) return;
+  //     setState(() {
+  //       hasError = true;
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

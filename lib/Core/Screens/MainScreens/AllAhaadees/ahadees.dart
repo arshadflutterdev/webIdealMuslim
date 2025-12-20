@@ -13,6 +13,7 @@ import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SunanAnNasai/ShowDet
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Show_details/chapterdetails.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/ShowDetails/majah_chapter_details.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -448,10 +449,27 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                         );
                                       }
                                     },
-                                    trailing: SizedBox(
-                                      width: width * 0.20,
+                                    trailing: Text(
+                                      urduBookNames[slug] ??
+                                          book.bookName ??
+                                          "",
+                                      style: TextStyle(
+                                        fontFamily: AppFonts.urdufont,
+                                        fontSize: 22,
+                                        color: namecolors[index],
+                                      ),
+                                    ),
+                                    title: SizedBox(
+                                      width: width * 0.50,
                                       child: Row(
                                         children: [
+                                          Text(
+                                            book.chaptersCount ?? "",
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          Gap(10),
                                           IconButton(
                                             onPressed:
                                                 isDownloadingMap[slug] ==
@@ -482,23 +500,8 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                     color: Colors.black54,
                                                   ),
                                           ),
-
-                                          Text(
-                                            urduBookNames[slug] ??
-                                                book.bookName ??
-                                                "",
-                                            style: TextStyle(
-                                              fontFamily: AppFonts.urdufont,
-                                              fontSize: 22,
-                                              color: namecolors[index],
-                                            ),
-                                          ),
                                         ],
                                       ),
-                                    ),
-                                    title: Text(
-                                      book.chaptersCount ?? "",
-                                      style: const TextStyle(fontSize: 18),
                                     ),
                                   ),
                                 ),
