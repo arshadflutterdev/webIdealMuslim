@@ -1,17 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
-import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sahi-bukhari.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadith_details_model.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Hadithdetails extends StatefulWidget {
   final String? ChapterId;
@@ -22,33 +19,65 @@ class Hadithdetails extends StatefulWidget {
 }
 
 class _HadithdetailsState extends State<Hadithdetails> {
-  List<Data> hadithList = [];
-  bool isLoading = false;
+  List<Data> haditsss = [];
+  bool isLoading = true;
   int selected = 1;
   Future<void> getdownloadhadith() async {
     setState(() {
       isLoading = true;
     });
+
     try {
-      final chapterQuery = widget.ChapterId != null
-          ? "&chapter=${widget.ChapterId}"
-          : "";
       final dir = await getApplicationDocumentsDirectory();
       final file = File("${dir.path}/sahih-bukhari.json");
-      print("file path printed ${file.path}");
-      print('File exists: ${file.existsSync()}');
-      if (file.existsSync()) {
-        final fileContant = await file.readAsString();
-        final hadithContant = jsonDecode(fileContant);
-        final hadithData = HadithDetails.fromJson(hadithContant);
+
+      if (!file.existsSync()) {
+        print("Offline data file not found!");
         setState(() {
-          hadithList = hadithData.hadiths?.data ?? [];
-          print("here is hadith dataaa  $hadithList");
+          haditsss = [];
           isLoading = false;
         });
+        return;
       }
+
+      final fileContent = await file.readAsString();
+      final filedecode = jsonDecode(fileContent);
+
+      // filedecode["chapters"] should be a List
+      final chapters = filedecode["chapters"];
+      List<Data> allHadiths = [];
+
+      if (chapters != null && chapters is List) {
+        for (var chapter in chapters) {
+          final hadithMap = chapter["hadiths"];
+          if (hadithMap != null && hadithMap is Map<String, dynamic>) {
+            final hadithList = hadithMap["data"];
+            if (hadithList != null && hadithList is List) {
+              for (var h in hadithList) {
+                allHadiths.add(Data.fromJson(h));
+              }
+            }
+          }
+        }
+      }
+
+      // Filter by ChapterId if provided
+      final filteredHadiths = widget.ChapterId == null
+          ? allHadiths
+          : allHadiths.where((h) => h.chapterId == widget.ChapterId).toList();
+
+      setState(() {
+        haditsss = filteredHadiths;
+        isLoading = false;
+      });
+
+      print("Total hadiths loaded: ${haditsss.length}");
     } catch (e) {
-      throw Exception("here is exception ${e.toString()}");
+      print("Error loading hadiths offline: ${e.toString()}");
+      setState(() {
+        haditsss = [];
+        isLoading = false;
+      });
     }
   }
 
@@ -201,12 +230,12 @@ class _HadithdetailsState extends State<Hadithdetails> {
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.green),
               )
-            : hadithList.isEmpty
-            ? const Center(child: Text("No data found"))
+            : haditsss.isEmpty
+            ? const Center(child: Text("No Internet Connection"))
             : ListView.builder(
-                itemCount: hadithList.length,
+                itemCount: haditsss.length,
                 itemBuilder: (context, index) {
-                  final item = hadithList[index];
+                  final item = haditsss[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
