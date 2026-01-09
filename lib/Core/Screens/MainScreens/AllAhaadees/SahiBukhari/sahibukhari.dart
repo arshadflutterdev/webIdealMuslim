@@ -298,6 +298,10 @@ class _BukhariState extends State<Bukhari> {
           // title: Text(widget.title),
           title: TextField(
             decoration: InputDecoration(
+              hint: Text(
+                "Search hadith number",
+                style: TextStyle(color: Colors.black45),
+              ),
               suffix: IconButton(
                 onPressed: () {
                   hadithsearch.clear();
@@ -330,25 +334,39 @@ class _BukhariState extends State<Bukhari> {
                       itemCount: searchedResults.length,
                       itemBuilder: (context, index) {
                         final hadith = searchedResults[index];
-                        return Card(
-                          elevation: 3,
-                          margin: const EdgeInsets.all(8),
-                          child: ListTile(
-                            title: Text(
-                              "Hadith #${hadith.hadithNumber}",
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            subtitle: Text(hadith.hadithEnglish ?? ""),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Hadithdetails(
-                                    ChapterId: hadith.chapterId,
-                                  ),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Hadithdetails(
+                                  ChapterId: hadith.chapterId,
+                                  hadithNumber: hadith.hadithNumber.toString(),
                                 ),
-                              );
-                            },
+                              ),
+                            );
+                          },
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 3,
+                            margin: const EdgeInsets.all(8),
+                            child: ListTile(
+                              title: Text(
+                                "Hadith #${hadith.hadithNumber}",
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                              subtitle: Text(hadith.hadithEnglish ?? ""),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Hadithdetails(
+                                      ChapterId: hadith.chapterId,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         );
                       },

@@ -12,13 +12,15 @@ import 'package:share_plus/share_plus.dart';
 
 class Hadithdetails extends StatefulWidget {
   final String? ChapterId;
-  const Hadithdetails({super.key, this.ChapterId});
+  final String? hadithNumber;
+  const Hadithdetails({super.key, this.ChapterId, this.hadithNumber});
 
   @override
   State<Hadithdetails> createState() => _HadithdetailsState();
 }
 
 class _HadithdetailsState extends State<Hadithdetails> {
+  ScrollController scontroller = ScrollController();
   List<Data> haditsss = [];
   bool isLoading = true;
   int selected = 1;
@@ -70,6 +72,20 @@ class _HadithdetailsState extends State<Hadithdetails> {
         haditsss = filteredHadiths;
         isLoading = false;
       });
+      if (widget.hadithNumber != null) {
+        final index = haditsss.indexWhere(
+          (h) => h.hadithNumber.toString() == widget.hadithNumber,
+        );
+        if (index != -1) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            scontroller.animateTo(
+              index * 200,
+              duration: Duration(microseconds: 500),
+              curve: Curves.easeInOut,
+            );
+          });
+        }
+      }
 
       print("Total hadiths loaded: ${haditsss.length}");
     } catch (e) {
@@ -380,6 +396,7 @@ class _HadithdetailsState extends State<Hadithdetails> {
             : haditsss.isEmpty
             ? const Center(child: Text("No Internet Connection"))
             : ListView.builder(
+                controller: scontroller,
                 itemCount: haditsss.length,
                 itemBuilder: (context, index) {
                   final item = haditsss[index];
