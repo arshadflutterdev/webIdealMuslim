@@ -92,7 +92,7 @@ class _BukhariState extends State<Bukhari> {
       final end = int.tryParse(parts[1]);
       if (start != null && end != null) {
         results = allhadith.where((h) {
-          final num = int.tryParse(h.hadithNumber.toString());
+          final num = int.tryParse(h.hadithNumber ?? "");
           return num != null && num >= start && num <= end;
         }).toList();
       }
@@ -100,8 +100,9 @@ class _BukhariState extends State<Bukhari> {
       final number = int.tryParse(query);
       if (number != null) {
         results = allhadith.where((h) {
-          final num = int.tryParse(h.hadithNumber.toString());
-          return num != null && num == number;
+          return h.hadithNumber?.toString() == query;
+          // final num = int.tryParse(h.hadithNumber.toString());
+          // return num != null && num == number;
         }).toList();
       }
     }
