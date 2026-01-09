@@ -342,6 +342,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                 // );
                                                 DownloadService.instance
                                                     .downloadBook(
+                                                      isUrdu: false,
                                                       context,
                                                       slug,
                                                     );
@@ -525,6 +526,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                 // );
                                                 DownloadService.instance
                                                     .downloadBook(
+                                                      isUrdu: true,
                                                       context,
                                                       slug,
                                                     );

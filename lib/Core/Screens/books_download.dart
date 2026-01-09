@@ -30,11 +30,20 @@ class DownloadService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> downloadBook(BuildContext context, String slug) async {
-    /// ❌ agar koi aur book already download ho rahi hai
+  Future<void> downloadBook(
+    BuildContext context,
+    String slug, {
+    required bool isUrdu,
+  }) async {
     if (_currentDownloadingSlug != null && _currentDownloadingSlug != slug) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Pehly wali book download ho rahi hai")),
+        SnackBar(
+          content: Text(
+            isUrdu
+                ? "پہلے والی کتاب ڈاؤن لوڈ ہو رہی ہے"
+                : "Another book is already downloading",
+          ),
+        ),
       );
       return;
     }
@@ -63,14 +72,54 @@ class DownloadService extends ChangeNotifier {
       final dir = await getApplicationDocumentsDirectory();
       final file = File("${dir.path}/$slug.json");
       _isDownloaded[slug] = file.existsSync();
-    } catch (e) {
-      debugPrint("Download error: $e");
     } finally {
       _isDownloading[slug] = false;
       _currentDownloadingSlug = null;
       notifyListeners();
     }
   }
+
+  // Future<void> downloadBook(BuildContext context, String slug) async {
+  //   /// ❌ agar koi aur book already download ho rahi hai
+  //   if (_currentDownloadingSlug != null && _currentDownloadingSlug != slug) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("Another book is already downloading")),
+  //     );
+  //     return;
+  //   }
+
+  //   if (_isDownloading[slug] == true) return;
+
+  //   _currentDownloadingSlug = slug;
+  //   _isDownloading[slug] = true;
+  //   notifyListeners();
+
+  //   try {
+  //     if (slug == "sahih-bukhari") {
+  //       await DownloadSahiBukhar().downloadbook();
+  //     } else if (slug == "sahih-muslim") {
+  //       await DownloadSahimuslim().downloadsahimuslim();
+  //     } else if (slug == "al-tirmidhi") {
+  //       await DownloadJamialtirmidhi().downloadjamiatirmidhi();
+  //     } else if (slug == "abu-dawood") {
+  //       await DownloadSunanAbuDawood().getdownload();
+  //     } else if (slug == "ibn-e-majah") {
+  //       await DownloadSunanIbnMajah().getdownloadbook();
+  //     } else if (slug == "sunan-nasai") {
+  //       await DownloadSunanAnnasai().getDownload();
+  //     }
+
+  //     final dir = await getApplicationDocumentsDirectory();
+  //     final file = File("${dir.path}/$slug.json");
+  //     _isDownloaded[slug] = file.existsSync();
+  //   } catch (e) {
+  //     debugPrint("Download error: $e");
+  //   } finally {
+  //     _isDownloading[slug] = false;
+  //     _currentDownloadingSlug = null;
+  //     notifyListeners();
+  //   }
+  // }
 
   Future<void> deleteBook(String slug) async {
     final dir = await getApplicationDocumentsDirectory();
