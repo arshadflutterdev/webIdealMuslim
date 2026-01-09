@@ -354,6 +354,15 @@ class _SahimuslimdetailsUrduState extends State<SahimuslimdetailsUrdu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios_new),
+        ),
+      ),
       backgroundColor: Colors.white,
       body: isLoading
           ? const Center(child: CircularProgressIndicator(color: Colors.green))

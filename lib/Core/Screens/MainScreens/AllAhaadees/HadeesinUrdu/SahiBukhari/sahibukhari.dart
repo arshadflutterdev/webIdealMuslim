@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahiBukhari/hadithDetails.dart';
+import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadithDetails.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -193,45 +194,57 @@ class _BukhariUrduState extends State<BukhariUrdu> {
                   return Card(
                     elevation: 3,
                     color: Colors.white,
-                    child: Container(
-                      // height: 80,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 12,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                Hadithdetails(ChapterId: chapter.id.toString()),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        // height: 80,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 12,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
 
-                          children: [
-                            Text(
-                              hadithlength,
-                              style: TextStyle(
-                                fontFamily: AppFonts.arabicfont,
-                                fontSize: 16,
-                              ),
-                            ),
-
-                            Expanded(
-                              child: Text(
-                                maxLines: 3, // 🔴 important
-                                overflow: TextOverflow.ellipsis, // 🔴 important
-                                textAlign: TextAlign.right, // Urdu ke liye
-                                chapter.chapterUrdu ?? '',
+                            children: [
+                              Text(
+                                hadithlength,
                                 style: TextStyle(
-                                  fontFamily: AppFonts.urdufont,
-                                  fontSize: 22,
-                                  color: Colors.black,
+                                  fontFamily: AppFonts.arabicfont,
+                                  fontSize: 16,
                                 ),
                               ),
-                            ),
-                          ],
+
+                              Expanded(
+                                child: Text(
+                                  maxLines: 3, // 🔴 important
+                                  overflow:
+                                      TextOverflow.ellipsis, // 🔴 important
+                                  textAlign: TextAlign.right, // Urdu ke liye
+                                  chapter.chapterUrdu ?? '',
+                                  style: TextStyle(
+                                    fontFamily: AppFonts.urdufont,
+                                    fontSize: 22,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
