@@ -403,11 +403,11 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'package:Muslim/Core/Const/app_fonts.dart';
-import 'package:Muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/Core/Const/app_fonts.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadithDetails.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahmuslim_chapters_model.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadithDetails.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sahihmuslim/sahmuslim_chapters_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Bukhari extends StatefulWidget {
