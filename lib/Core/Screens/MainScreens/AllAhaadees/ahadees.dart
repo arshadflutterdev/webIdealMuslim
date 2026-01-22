@@ -232,24 +232,25 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Color(0xFF305CDE),
+          backgroundColor: const Color(0xFFFCF8F6),
           title: Text(
             "Hadees",
             style: TextStyle(
               fontSize: 30,
-              color: Colors.white,
+              color: Colors.black54,
               letterSpacing: 3,
               fontFamily: AppFonts.engfont,
             ),
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFFFCF8F6),
         body: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 height: 50,
+
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -262,6 +263,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicatorPadding: EdgeInsetsGeometry.zero,
                   unselectedLabelColor: Colors.black,
+                  indicatorColor: Colors.red,
                   tabs: [
                     Tab(text: "English"),
                     Tab(text: "Urdu"),
