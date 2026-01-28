@@ -311,7 +311,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                       width: width * 0.20,
                                       child: Row(
                                         children: [
-                                          if (kIsWeb)
+                                          if (!kIsWeb)
                                             IconButton(
                                               onPressed: () async {
                                                 // If already downloading, do nothing
