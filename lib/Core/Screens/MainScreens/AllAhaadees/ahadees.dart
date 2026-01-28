@@ -311,6 +311,13 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                       width: width * 0.20,
                                       child: Row(
                                         children: [
+                                          Text(
+                                            book.chaptersCount ?? "",
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          Gap(10),
                                           if (!kIsWeb)
                                             IconButton(
                                               onPressed: () async {
@@ -370,13 +377,6 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                       color: Colors.black54,
                                                     ),
                                             ),
-
-                                          Text(
-                                            book.chaptersCount ?? "",
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                            ),
-                                          ),
                                         ],
                                       ),
                                     ),
