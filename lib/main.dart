@@ -3,6 +3,7 @@ import 'package:Muslim/Core/Const/app_images.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
 import 'package:Muslim/splashscreen.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
