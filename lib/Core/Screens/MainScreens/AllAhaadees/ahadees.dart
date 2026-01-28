@@ -294,7 +294,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                               ),
                               child: SizedBox(
                                 height: orientation == Orientation.landscape
-                                    ? height * 0.10
+                                    ? height * 0.11
                                     : height * 0.09,
                                 child: Card(
                                   color: Colors.white,
@@ -415,7 +415,9 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                 vertical: 4,
                               ),
                               child: SizedBox(
-                                height: height * 0.09,
+                                height: orientation == Orientation.landscape
+                                    ? height * 0.11
+                                    : height * 0.09,
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
