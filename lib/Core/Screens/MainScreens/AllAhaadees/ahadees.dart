@@ -317,7 +317,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                               fontSize: 20,
                                             ),
                                           ),
-                                          Gap(10),
+
                                           if (!kIsWeb)
                                             IconButton(
                                               onPressed: () async {
