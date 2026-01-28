@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:Muslim/Core/Const/app_fonts.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Models/hadithdetailsmodel.dart';
-import 'package:Muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/Core/Const/app_fonts.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Models/hadithdetailsmodel.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
@@ -364,6 +364,15 @@ class _SunanHadithDetailsState extends State<SunanHadithDetails> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios_new),
+          ),
+        ),
         backgroundColor: Colors.white,
         body: isLoading
             ? const Center(
@@ -473,7 +482,7 @@ class _SunanHadithDetailsState extends State<SunanHadithDetails> {
                                 // English Translation:
                                 // ${item.hadithEnglish}
 
-                                // 🌙 Shared via Muslim App – Be Connected with Allah
+                                // 🌙 Shared via muslim App – Be Connected with Allah
                                 // """;
                                 //                                     await Clipboard.setData(
                                 //                                       ClipboardData(text: hadeesText),

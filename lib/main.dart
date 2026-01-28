@@ -1,7 +1,8 @@
-import 'package:Muslim/Core/Const/app_audio.dart';
-import 'package:Muslim/Core/Const/app_images.dart';
-import 'package:Muslim/Core/Services/ad_controller.dart';
-import 'package:Muslim/splashscreen.dart';
+import 'package:flutter/foundation.dart';
+import 'package:muslim/Core/Const/app_audio.dart';
+import 'package:muslim/Core/Const/app_images.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/splashscreen.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -9,8 +10,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await MobileAds.instance.initialize();
-
+  if (!kIsWeb) {
+    MobileAds.instance.initialize();
+  }
   AdController().initialize();
   runApp(const MyApp());
 }
@@ -49,7 +51,7 @@ class _ChecksomethingState extends State<Checksomething> {
     _player = AudioPlayer();
     _player.setReleaseMode(ReleaseMode.stop);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _player.setSource(AssetSource(AppAudio.testingaudio));
+    await _player.setSource(AssetSource(AppAudio.testingaudio))
     });
     _player.onDurationChanged.listen((d) {
       setState(() {

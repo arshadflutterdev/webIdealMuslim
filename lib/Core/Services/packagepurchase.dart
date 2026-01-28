@@ -1,7 +1,7 @@
-import 'package:Muslim/Core/Const/app_images.dart';
-import 'package:Muslim/Core/Services/carddetails.dart';
-import 'package:Muslim/Core/Widgets/Buttons/iconbutton.dart';
-import 'package:Muslim/Core/Widgets/Containers/container0.dart';
+import 'package:muslim/Core/Const/app_images.dart';
+import 'package:muslim/Core/Services/carddetails.dart';
+import 'package:muslim/Core/Widgets/Buttons/iconbutton.dart';
+import 'package:muslim/Core/Widgets/Containers/container0.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 

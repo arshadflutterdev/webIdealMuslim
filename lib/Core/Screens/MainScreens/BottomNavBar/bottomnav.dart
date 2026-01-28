@@ -1,8 +1,8 @@
 // import 'package:flutter/material.dart';
-// import 'package:Muslim/Core/Const/app_images.dart';
-// import 'package:Muslim/Core/Screens/MainScreens/Quran_e_Majeed.dart';
-// import 'package:Muslim/Core/Screens/MainScreens/ahadees.dart';
-// import 'package:Muslim/Core/Screens/MainScreens/tasbeeh.dart';
+// import 'package:muslim/Core/Const/app_images.dart';
+// import 'package:muslim/Core/Screens/MainScreens/Quran_e_Majeed.dart';
+// import 'package:muslim/Core/Screens/MainScreens/ahadees.dart';
+// import 'package:muslim/Core/Screens/MainScreens/tasbeeh.dart';
 
 // class Bottomnav extends StatefulWidget {
 //   const Bottomnav({super.key});
@@ -83,10 +83,10 @@
 //   }
 // }
 import 'package:flutter/material.dart';
-import 'package:Muslim/Core/Const/app_images.dart';
-import 'package:Muslim/Core/Screens/MainScreens/Quran/Quran_e_Majeed.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/ahadees.dart';
-import 'package:Muslim/Core/Screens/MainScreens/Tasbeeh/tasbeeh.dart';
+import 'package:muslim/Core/Const/app_images.dart';
+import 'package:muslim/Core/Screens/MainScreens/Quran/Quran_e_Majeed.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/ahadees.dart';
+import 'package:muslim/Core/Screens/MainScreens/Tasbeeh/tasbeeh.dart';
 
 class Bottomnav extends StatefulWidget {
   const Bottomnav({super.key});

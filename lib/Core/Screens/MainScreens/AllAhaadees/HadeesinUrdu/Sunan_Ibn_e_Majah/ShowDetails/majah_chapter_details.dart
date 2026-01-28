@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:Muslim/Core/Const/app_fonts.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Ibn_e_Majah/ShowDetails/majah_detailed.dart';
-import 'package:Muslim/Core/Services/ad_controller.dart';
-import 'package:Muslim/Core/Widgets/TextFields/customtextfield.dart';
+import 'package:muslim/Core/Const/app_fonts.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Ibn_e_Majah/ShowDetails/majah_detailed.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/Core/Widgets/TextFields/customtextfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/Models/sunan_ibn_e_majah_chapter_model.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/ShowDetails/majah_detailed.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/Models/sunan_ibn_e_majah_chapter_model.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/ShowDetails/majah_detailed.dart';
 
 class IbneMajahUrdu extends StatefulWidget {
   const IbneMajahUrdu({super.key});
@@ -146,7 +146,7 @@ class _IbneMajahUrduState extends State<IbneMajahUrdu> {
                 return Card(
                   elevation: 3,
                   color: Colors.white,
-                  child: ListTile(
+                  child: GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -157,23 +157,78 @@ class _IbneMajahUrduState extends State<IbneMajahUrdu> {
                         ),
                       );
                     },
-                    title: Text(
-                      chapter.chapterUrdu ?? "No name",
-                      style: TextStyle(
-                        fontFamily: AppFonts.urdufont,
-                        fontSize: 20,
-                        height: 2,
+                    child: Container(
+                      // height: 80,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    ),
-                    trailing: Text(
-                      hadithlength,
-                      style: TextStyle(
-                        fontFamily: AppFonts.arabicfont,
-                        fontSize: 16,
-                        color: Colors.black87,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 12,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+
+                          children: [
+                            Text(
+                              hadithlength,
+                              style: TextStyle(
+                                fontFamily: AppFonts.arabicfont,
+                                fontSize: 16,
+                              ),
+                            ),
+
+                            Expanded(
+                              child: Text(
+                                maxLines: 3, // 🔴 important
+                                overflow: TextOverflow.ellipsis, // 🔴 important
+                                textAlign: TextAlign.right, // Urdu ke liye
+                                chapter.chapterUrdu ?? '',
+                                style: TextStyle(
+                                  fontFamily: AppFonts.urdufont,
+                                  fontSize: 22,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
+
+                  // ListTile(
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => MajahDetailedUrdu(
+                  //           chapterIdss: chapter.chapterNumber,
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  //   title: Text(
+                  //     chapter.chapterUrdu ?? "No name",
+                  //     style: TextStyle(
+                  //       fontFamily: AppFonts.urdufont,
+                  //       fontSize: 20,
+                  //       height: 2,
+                  //     ),
+                  //   ),
+                  //   trailing: Text(
+                  //     hadithlength,
+                  //     style: TextStyle(
+                  //       fontFamily: AppFonts.arabicfont,
+                  //       fontSize: 16,
+                  //       color: Colors.black87,
+                  //     ),
+                  //   ),
+                  // ),
                 );
               },
             );

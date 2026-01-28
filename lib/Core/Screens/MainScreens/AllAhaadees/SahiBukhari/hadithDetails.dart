@@ -1,26 +1,31 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:Muslim/Core/Const/app_fonts.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadith_details_model.dart';
-import 'package:Muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/Core/Const/app_fonts.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadith_details_model.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:share_plus/share_plus.dart';
 
 class Hadithdetails extends StatefulWidget {
   final String? ChapterId;
-  const Hadithdetails({super.key, this.ChapterId});
+  final String? hadithNumber;
+  const Hadithdetails({super.key, this.ChapterId, this.hadithNumber});
 
   @override
   State<Hadithdetails> createState() => _HadithdetailsState();
 }
 
 class _HadithdetailsState extends State<Hadithdetails> {
+  ItemScrollController itemScrollController = ItemScrollController();
+
   List<Data> haditsss = [];
   bool isLoading = true;
+
   int selected = 1;
   Future<void> getdownloadhadith() async {
     setState(() {
@@ -65,11 +70,32 @@ class _HadithdetailsState extends State<Hadithdetails> {
       final filteredHadiths = widget.ChapterId == null
           ? allHadiths
           : allHadiths.where((h) => h.chapterId == widget.ChapterId).toList();
-
       setState(() {
         haditsss = filteredHadiths;
         isLoading = false;
       });
+      if (widget.hadithNumber != null) {
+        final index = haditsss.indexWhere(
+          (h) => h.hadithNumber.toString() == widget.hadithNumber,
+        );
+        if (widget.hadithNumber != null) {
+          final index = haditsss.indexWhere(
+            (h) => h.hadithNumber.toString() == widget.hadithNumber,
+          );
+          if (index != -1) {
+            // Approximate height of each hadith item
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              itemScrollController.scrollTo(
+                index: index,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                alignment: 0.1,
+              );
+            });
+          }
+        }
+      }
 
       print("Total hadiths loaded: ${haditsss.length}");
     } catch (e) {
@@ -363,6 +389,15 @@ class _HadithdetailsState extends State<Hadithdetails> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios_new),
+          ),
+        ),
         backgroundColor: Colors.white,
         body: isLoading
             ? const Center(
@@ -370,7 +405,8 @@ class _HadithdetailsState extends State<Hadithdetails> {
               )
             : haditsss.isEmpty
             ? const Center(child: Text("No Internet Connection"))
-            : ListView.builder(
+            : ScrollablePositionedList.builder(
+                itemScrollController: itemScrollController,
                 itemCount: haditsss.length,
                 itemBuilder: (context, index) {
                   final item = haditsss[index];

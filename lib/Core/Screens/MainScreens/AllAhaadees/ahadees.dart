@@ -1,31 +1,29 @@
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+
 import 'dart:convert';
 import 'dart:io';
-import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_jami-al-tirmidhi.dart';
-import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sahi-muslim.dart';
-import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sunan_abu_dawood.dart';
-import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sunan_annasai.dart';
-import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sunan_ibn_majah.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_chapter_details.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/sahibukhari.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahih_muslim_chapters.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SunanAnNasai/ShowDetails/sunan_chapters.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Show_details/chapterdetails.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/ShowDetails/majah_chapter_details.dart';
-import 'package:Muslim/Core/Screens/books_download.dart';
+import 'package:flutter/foundation.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_chapter_details.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/sahibukhari.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahih_muslim_chapters.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SunanAnNasai/ShowDetails/sunan_chapters.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Show_details/chapterdetails.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/ShowDetails/majah_chapter_details.dart';
+import 'package:muslim/Core/Screens/books_download.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:Muslim/Core/Const/app_fonts.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_chapter_details.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahiBukhari/sahibukhari.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahihMuslim/sahih_muslim_chapters.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SunanAnNasai/ShowDetails/sunan_chapters.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Abu_Dawood/Show_details/chapterdetails.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Ibn_e_Majah/ShowDetails/majah_chapter_details.dart';
+import 'package:muslim/Core/Const/app_fonts.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_chapter_details.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahiBukhari/sahibukhari.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sahihmuslim/sahih_muslim_chapters.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SunanAnNasai/ShowDetails/sunan_chapters.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Abu_Dawood/Show_details/chapterdetails.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Ibn_e_Majah/ShowDetails/majah_chapter_details.dart';
 
-import 'package:Muslim/Data/Models/ahadeesmodel.dart';
+import 'package:muslim/Data/Models/ahadeesmodel.dart';
 
 class Ahadees extends StatefulWidget {
   const Ahadees({super.key});
@@ -225,30 +223,32 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    final orientation = MediaQuery.of(context).orientation;
 
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Color(0xFF305CDE),
+          backgroundColor: const Color(0xFFFCF8F6),
           title: Text(
             "Hadees",
             style: TextStyle(
               fontSize: 30,
-              color: Colors.white,
+              color: Colors.black54,
               letterSpacing: 3,
               fontFamily: AppFonts.engfont,
             ),
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFFFCF8F6),
         body: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 height: 50,
+
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -261,6 +261,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicatorPadding: EdgeInsetsGeometry.zero,
                   unselectedLabelColor: Colors.black,
+                  indicatorColor: Colors.red,
                   tabs: [
                     Tab(text: "English"),
                     Tab(text: "Urdu"),
@@ -293,7 +294,9 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                 vertical: 4,
                               ),
                               child: SizedBox(
-                                height: height * 0.09,
+                                height: orientation == Orientation.landscape
+                                    ? 65
+                                    : height * 0.09,
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -308,115 +311,72 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                       width: width * 0.20,
                                       child: Row(
                                         children: [
-                                          IconButton(
-                                            onPressed: () async {
-                                              // If already downloading, do nothing
-                                              if (downloadService.isDownloading(
-                                                slug,
-                                              )) {
-                                                ScaffoldMessenger.of(
-                                                  context,
-                                                ).showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                      "A download is already in progress. Please wait!",
-                                                    ),
-                                                    duration: Duration(
-                                                      seconds: 2,
-                                                    ),
-                                                  ),
-                                                );
-                                                return;
-                                              }
-
-                                              // If already downloaded, delete it
-                                              if (downloadService.isDownloaded(
-                                                slug,
-                                              )) {
-                                                await downloadService
-                                                    .deleteBook(slug);
-                                              } else {
-                                                // Queue the download instead of calling downloadBook directly
-                                                downloadService.downloadBook(
-                                                  slug,
-                                                );
-                                              }
-                                            },
-                                            icon:
-                                                downloadService.isDownloading(
-                                                  slug,
-                                                )
-                                                ? const SizedBox(
-                                                    width: 24,
-                                                    height: 24,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                          color: Colors.green,
-                                                          strokeWidth: 2,
-                                                        ),
-                                                  )
-                                                : downloadService.isDownloaded(
-                                                    slug,
-                                                  )
-                                                ? const Icon(
-                                                    Icons.delete,
-                                                    color: Colors.red,
-                                                  )
-                                                : const Icon(
-                                                    Icons.download,
-                                                    color: Colors.black54,
-                                                  ),
-                                          ),
-
-                                          // IconButton(
-                                          //   onPressed: () async {
-                                          //     if (downloadService.isDownloading(
-                                          //       slug,
-                                          //     ))
-                                          //       return;
-
-                                          //     if (downloadService.isDownloaded(
-                                          //       slug,
-                                          //     )) {
-                                          //       await downloadService
-                                          //           .deleteBook(slug);
-                                          //     } else {
-                                          //       await downloadService
-                                          //           .downloadBook(slug);
-                                          //     }
-                                          //   },
-
-                                          //   icon:
-                                          //       downloadService.isDownloading(
-                                          //         slug,
-                                          //       )
-                                          //       ? const SizedBox(
-                                          //           width: 24,
-                                          //           height: 24,
-                                          //           child:
-                                          //               CircularProgressIndicator(
-                                          //                 color: Colors.green,
-                                          //                 strokeWidth: 2,
-                                          //               ),
-                                          //         )
-                                          //       : downloadService.isDownloaded(
-                                          //           slug,
-                                          //         )
-                                          //       ? const Icon(
-                                          //           Icons.delete,
-                                          //           color: Colors.red,
-                                          //         )
-                                          //       : const Icon(
-                                          //           Icons.download,
-                                          //           color: Colors.black54,
-                                          //         ),
-                                          // ),
                                           Text(
                                             book.chaptersCount ?? "",
                                             style: const TextStyle(
                                               fontSize: 20,
                                             ),
                                           ),
+
+                                          if (!kIsWeb)
+                                            IconButton(
+                                              onPressed: () async {
+                                                // If already downloading, do nothing
+                                                if (downloadService
+                                                    .isDownloading(slug)) {
+                                                  ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                        "A download is already in progress. Please wait!",
+                                                      ),
+                                                      duration: Duration(
+                                                        seconds: 2,
+                                                      ),
+                                                    ),
+                                                  );
+                                                  return;
+                                                }
+
+                                                // If already downloaded, delete it
+                                                if (downloadService
+                                                    .isDownloaded(slug)) {
+                                                  await downloadService
+                                                      .deleteBook(slug);
+                                                } else {
+                                                  DownloadService.instance
+                                                      .downloadBook(
+                                                        isUrdu: false,
+                                                        context,
+                                                        slug,
+                                                      );
+                                                }
+                                              },
+                                              icon:
+                                                  downloadService.isDownloading(
+                                                    slug,
+                                                  )
+                                                  ? const SizedBox(
+                                                      width: 24,
+                                                      height: 24,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                            color: Colors.green,
+                                                            strokeWidth: 2,
+                                                          ),
+                                                    )
+                                                  : downloadService
+                                                        .isDownloaded(slug)
+                                                  ? const Icon(
+                                                      Icons.delete,
+                                                      color: Colors.red,
+                                                    )
+                                                  : const Icon(
+                                                      Icons.download,
+                                                      color: Colors.black54,
+                                                    ),
+                                            ),
                                         ],
                                       ),
                                     ),
@@ -454,7 +414,9 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                 vertical: 4,
                               ),
                               child: SizedBox(
-                                height: height * 0.09,
+                                height: orientation == Orientation.landscape
+                                    ? 65
+                                    : height * 0.09,
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -486,65 +448,69 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                             ),
                                           ),
                                           Gap(10),
-                                          IconButton(
-                                            onPressed: () async {
-                                              // If already downloading, do nothing
-                                              if (downloadService.isDownloading(
-                                                slug,
-                                              )) {
-                                                ScaffoldMessenger.of(
-                                                  context,
-                                                ).showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                      "ایک ڈاؤن لوڈ پہلے سے جاری ہے، براہ کرم انتظار کریں!",
+                                          if (!kIsWeb)
+                                            IconButton(
+                                              onPressed: () async {
+                                                // If already downloading, do nothing
+                                                if (downloadService
+                                                    .isDownloading(slug)) {
+                                                  ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                        "ایک ڈاؤن لوڈ پہلے سے جاری ہے، براہ کرم انتظار کریں!",
+                                                      ),
+                                                      duration: Duration(
+                                                        seconds: 2,
+                                                      ),
                                                     ),
-                                                    duration: Duration(
-                                                      seconds: 2,
-                                                    ),
-                                                  ),
-                                                );
-                                                return;
-                                              }
+                                                  );
+                                                  return;
+                                                }
 
-                                              // If already downloaded, delete it
-                                              if (downloadService.isDownloaded(
-                                                slug,
-                                              )) {
-                                                await downloadService
-                                                    .deleteBook(slug);
-                                              } else {
-                                                // Queue the download instead of calling downloadBook directly
-                                                downloadService.downloadBook(
-                                                  slug,
-                                                );
-                                              }
-                                            },
-                                            icon:
-                                                downloadService.isDownloading(
-                                                  slug,
-                                                )
-                                                ? const SizedBox(
-                                                    width: 24,
-                                                    height: 24,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                          color: Colors.green,
-                                                          strokeWidth: 2,
-                                                        ),
-                                                  )
-                                                : downloadService.isDownloaded(
+                                                // If already downloaded, delete it
+                                                if (downloadService
+                                                    .isDownloaded(slug)) {
+                                                  await downloadService
+                                                      .deleteBook(slug);
+                                                } else {
+                                                  // Queue the download instead of calling downloadBook directly
+                                                  // downloadService.downloadBook(
+                                                  //   slug,
+                                                  // );
+                                                  DownloadService.instance
+                                                      .downloadBook(
+                                                        isUrdu: true,
+                                                        context,
+                                                        slug,
+                                                      );
+                                                }
+                                              },
+                                              icon:
+                                                  downloadService.isDownloading(
                                                     slug,
                                                   )
-                                                ? const Icon(
-                                                    Icons.delete,
-                                                    color: Colors.red,
-                                                  )
-                                                : const Icon(
-                                                    Icons.download,
-                                                    color: Colors.black54,
-                                                  ),
-                                          ),
+                                                  ? const SizedBox(
+                                                      width: 24,
+                                                      height: 24,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                            color: Colors.green,
+                                                            strokeWidth: 2,
+                                                          ),
+                                                    )
+                                                  : downloadService
+                                                        .isDownloaded(slug)
+                                                  ? const Icon(
+                                                      Icons.delete,
+                                                      color: Colors.red,
+                                                    )
+                                                  : const Icon(
+                                                      Icons.download,
+                                                      color: Colors.black54,
+                                                    ),
+                                            ),
 
                                           // IconButton(
                                           //   onPressed: () async {

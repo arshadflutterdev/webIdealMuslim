@@ -1,16 +1,16 @@
-import 'package:Muslim/Core/Services/ad_controller.dart';
-import 'package:Muslim/Core/Services/rewarded_ad_services.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/Core/Services/rewarded_ad_services.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:Muslim/Core/Const/app_images.dart';
-import 'package:Muslim/Core/Const/apptextstyle.dart';
-import 'package:Muslim/Core/Screens/MainScreens/Tasbeeh/tasbeehbeads.dart';
-import 'package:Muslim/Core/Widgets/Buttons/containerbutton.dart';
-import 'package:Muslim/Core/Widgets/Buttons/customtextbutton.dart';
-import 'package:Muslim/Core/Widgets/Buttons/iconbutton.dart';
-import 'package:Muslim/Core/Widgets/Containers/container0.dart';
+import 'package:muslim/Core/Const/app_images.dart';
+import 'package:muslim/Core/Const/apptextstyle.dart';
+import 'package:muslim/Core/Screens/MainScreens/Tasbeeh/tasbeehbeads.dart';
+import 'package:muslim/Core/Widgets/Buttons/containerbutton.dart';
+import 'package:muslim/Core/Widgets/Buttons/customtextbutton.dart';
+import 'package:muslim/Core/Widgets/Buttons/iconbutton.dart';
+import 'package:muslim/Core/Widgets/Containers/container0.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:vibration/vibration.dart';

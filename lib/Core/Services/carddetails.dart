@@ -1,5 +1,5 @@
-import 'package:Muslim/Core/Const/app_images.dart';
-import 'package:Muslim/Core/Widgets/TextFields/customtextfield.dart';
+import 'package:muslim/Core/Const/app_images.dart';
+import 'package:muslim/Core/Widgets/TextFields/customtextfield.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 

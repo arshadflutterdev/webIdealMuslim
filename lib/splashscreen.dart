@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:Muslim/Core/Const/app_images.dart';
-import 'package:Muslim/Core/Screens/MainScreens/BottomNavBar/bottomnav.dart';
+import 'package:muslim/Core/Const/app_images.dart';
+import 'package:muslim/Core/Screens/MainScreens/BottomNavBar/bottomnav.dart';
 import 'package:gap/gap.dart';
 
 class Splashscreen extends StatefulWidget {

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:Muslim/Core/Const/app_fonts.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SunanAnNasai/Models/sunananasai_detailed_model.dart';
-import 'package:Muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/Core/Const/app_fonts.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SunanAnNasai/Models/sunananasai_detailed_model.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
@@ -56,6 +56,11 @@ class _SunananasaiHadithDetailsState extends State<SunananasaiHadithDetails> {
             final hadithList = hadithMap["data"];
             if (hadithList != null && hadithList is List) {
               for (var h in hadithList) {
+                final data = Data.fromJson(h);
+                print("here i print h $h");
+                print(
+                  "Hadith #${data.hadithNumber} narrator: ${data.englishNarrator}",
+                );
                 allHadiths.add(Data.fromJson(h));
               }
             }
@@ -199,7 +204,7 @@ class _SunananasaiHadithDetailsState extends State<SunananasaiHadithDetails> {
                         textToCopy = item.hadithEnglish ?? "";
                       } else {
                         textToCopy =
-                            "Hadith No: ${item.hadithNumber}\nStatus: ${item.status}\n\nArabic:\n${item.hadithArabic}\n\nEnglish Translation:\n${item.hadithEnglish}\n\n🌙 Shared via Muslim App – Be Connected with Allah";
+                            "Hadith No: ${item.hadithNumber}\nStatus: ${item.status}\n\nArabic:\n${item.hadithArabic}\n\nEnglish Translation:\n${item.hadithEnglish}\n\n🌙 Shared via muslim App – Be Connected with Allah";
                       }
 
                       Clipboard.setData(ClipboardData(text: textToCopy));
@@ -375,6 +380,15 @@ class _SunananasaiHadithDetailsState extends State<SunananasaiHadithDetails> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios_new),
+          ),
+        ),
         backgroundColor: Colors.white,
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
@@ -498,7 +512,7 @@ class _SunananasaiHadithDetailsState extends State<SunananasaiHadithDetails> {
                                 // English Translation:
                                 // ${item.hadithEnglish}
 
-                                // 🌙 Shared via Muslim App – Be Connected with Allah
+                                // 🌙 Shared via muslim App – Be Connected with Allah
                                 // """;
                                 //                                     await Clipboard.setData(
                                 //                                       ClipboardData(text: hadeesText),

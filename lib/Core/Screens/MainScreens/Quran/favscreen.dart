@@ -1,8 +1,8 @@
-import 'package:Muslim/Core/Services/ad_controller.dart';
-import 'package:Muslim/Core/Services/rewarded_ad_services.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/Core/Services/rewarded_ad_services.dart';
 import 'package:flutter/material.dart';
-import 'package:Muslim/Core/Screens/MainScreens/Quran/quran_surah.dart';
-import 'package:Muslim/Core/Widgets/Buttons/iconbutton.dart';
+import 'package:muslim/Core/Screens/MainScreens/Quran/quran_surah.dart';
+import 'package:muslim/Core/Widgets/Buttons/iconbutton.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class FavouriteScreen extends StatefulWidget {

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:Muslim/Core/Const/app_fonts.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadith_details_model.dart';
-import 'package:Muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/Core/Const/app_fonts.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadith_details_model.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
@@ -492,7 +492,7 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                                 // English Translation:
                                 // ${item.headingEnglish}
 
-                                // 🌙 Shared via Muslim App – Be Connected with Allah
+                                // 🌙 Shared via muslim App – Be Connected with Allah
                                 // """;
                                 //                                     await Clipboard.setData(
                                 //                                       ClipboardData(text: hadeesText),
