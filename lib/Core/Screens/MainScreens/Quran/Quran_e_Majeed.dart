@@ -195,7 +195,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
           title: Text(
             "Al-Qur’an",
             style: TextStyle(
-              fontSize: height * 0.040,
+              fontSize: height * 0.070,
               fontWeight: FontWeight.w600,
               color: const Color(0xFF2F3E34),
             ),
@@ -268,99 +268,103 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
         ),
 
         body: kIsWeb
-            ? GridView.builder(
-                itemCount: searchSurrah.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 5,
-                ),
-                itemBuilder: (context, index) {
-                  final actualIndex = surahNames.indexOf(searchSurrah[index]);
-                  final surahNumber = actualIndex + 1;
-                  final isFavourite = favourites[actualIndex];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 6,
-                    ),
-                    child: Container(
-                      height: height * 0.05,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x14000000),
-                            offset: Offset(0, 2),
-                            blurRadius: 8,
-                          ),
-                        ],
+            ? Padding(
+                padding: EdgeInsets.only(top: height * 0.10),
+                child: GridView.builder(
+                  itemCount: searchSurrah.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 5,
+                  ),
+                  itemBuilder: (context, index) {
+                    final actualIndex = surahNames.indexOf(searchSurrah[index]);
+                    final surahNumber = actualIndex + 1;
+                    final isFavourite = favourites[actualIndex];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 6,
                       ),
-                      child: InkWell(
-                        canRequestFocus: false,
-                        borderRadius: BorderRadius.circular(16),
-                        onTap: () {
-                          Future.microtask(() {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => QuranSurah(searchSurrah[index]),
-                              ),
-                            );
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: height * 0.026,
-                                backgroundColor: const Color(0xFFDDEBDF),
-                                child: Text(
-                                  surahNumber.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xFF2F3E34),
-                                    fontSize: height * 0.018,
+                      child: Container(
+                        height: height * 0.05,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0x14000000),
+                              offset: Offset(0, 2),
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                        child: InkWell(
+                          canRequestFocus: false,
+                          borderRadius: BorderRadius.circular(16),
+                          onTap: () {
+                            Future.microtask(() {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      QuranSurah(searchSurrah[index]),
+                                ),
+                              );
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: height * 0.026,
+                                  backgroundColor: const Color(0xFFDDEBDF),
+                                  child: Text(
+                                    surahNumber.toString(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xFF2F3E34),
+                                      fontSize: height * 0.018,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 14),
-                              Expanded(
-                                child: Text(
-                                  searchSurrah[index],
-                                  style: TextStyle(
-                                    fontSize: height * 0.028,
-                                    fontWeight: FontWeight.w500,
-                                    color: const Color(0xFF2F3E34),
+                                const SizedBox(width: 14),
+                                Expanded(
+                                  child: Text(
+                                    searchSurrah[index],
+                                    style: TextStyle(
+                                      fontSize: height * 0.038,
+                                      fontWeight: FontWeight.w500,
+                                      color: const Color(0xFF2F3E34),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              IconButton0(
-                                onPressed: () {
-                                  setState(() {
-                                    favourites[actualIndex] =
-                                        !favourites[actualIndex];
-                                  });
-                                  _saveFavourites();
-                                },
-                                bicon: Icon(
-                                  isFavourite
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: isFavourite
-                                      ? const Color(0xFFE85C5C)
-                                      : const Color(0xFF9E9E9E),
-                                  size: height * 0.045,
+                                IconButton0(
+                                  onPressed: () {
+                                    setState(() {
+                                      favourites[actualIndex] =
+                                          !favourites[actualIndex];
+                                    });
+                                    _saveFavourites();
+                                  },
+                                  bicon: Icon(
+                                    isFavourite
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    color: isFavourite
+                                        ? const Color(0xFFE85C5C)
+                                        : const Color(0xFF9E9E9E),
+                                    size: height * 0.045,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               )
             : ListView.builder(
                 itemCount: searchSurrah.length,
