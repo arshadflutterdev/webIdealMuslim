@@ -282,6 +282,42 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                       ? const Center(child: Text("No Internet Connection"))
                       : booksList.isEmpty
                       ? const Center(child: Text("No Hadith books found"))
+                      : (kIsWeb)
+                      ? GridView.builder(
+                          itemCount: booksList.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                childAspectRatio: 5.5,
+                              ),
+                          itemBuilder: (context, index) {
+                            final book = booksList[index];
+                            final slug = book.bookSlug ?? "";
+                            return Card(
+                              color: Colors.white,
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ListTile(
+                                onTap: () {
+                                  handleBookTap(slug: slug, isUrdu: false);
+                                },
+                                trailing: Text(
+                                  book.chaptersCount ?? "",
+                                  style: TextStyle(fontSize: height * 0.30),
+                                ),
+                                title: Text(
+                                  book.bookName ?? "",
+                                  style: TextStyle(
+                                    fontSize: height * 0.030,
+                                    color: namecolors[index],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        )
                       : ListView.builder(
                           itemCount: booksList.length,
                           itemBuilder: (context, index) {
