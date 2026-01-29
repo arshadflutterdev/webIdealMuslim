@@ -1,7 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim/Core/Const/app_audio.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:muslim/splashscreen.dart';
@@ -9,7 +8,7 @@ import 'package:flutter/foundation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await MobileAds.instance.initialize();
+  // await MobileAds.instance.initialize();
 
   if (!kIsWeb) {
     AdController().initialize();
