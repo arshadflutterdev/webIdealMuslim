@@ -304,8 +304,10 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                   handleBookTap(slug: slug, isUrdu: false);
                                 },
                                 trailing: Text(
+                                  overflow: TextOverflow.ellipsis,
+
                                   book.chaptersCount ?? "",
-                                  style: TextStyle(fontSize: height * 0.30),
+                                  style: TextStyle(fontSize: height * 0.030),
                                 ),
                                 title: Text(
                                   book.bookName ?? "",
