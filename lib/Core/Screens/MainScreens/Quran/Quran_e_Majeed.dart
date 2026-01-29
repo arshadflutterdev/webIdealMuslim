@@ -194,11 +194,17 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
           centerTitle: true,
           title: Text(
             "Al-Qur’an",
-            style: TextStyle(
-              fontSize: height * 0.070,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF2F3E34),
-            ),
+            style: kIsWeb
+                ? TextStyle(
+                    fontSize: height * 0.080,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2F3E34),
+                  )
+                : TextStyle(
+                    fontSize: height * 0.040,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2F3E34),
+                  ),
           ),
           actions: [
             // IconButton0(
@@ -269,7 +275,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
 
         body: kIsWeb
             ? Padding(
-                padding: EdgeInsets.only(top: height * 0.10),
+                padding: EdgeInsets.only(top: height * 0.080),
                 child: GridView.builder(
                   itemCount: searchSurrah.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -324,7 +330,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: const Color(0xFF2F3E34),
-                                      fontSize: height * 0.018,
+                                      fontSize: height * 0.028,
                                     ),
                                   ),
                                 ),
