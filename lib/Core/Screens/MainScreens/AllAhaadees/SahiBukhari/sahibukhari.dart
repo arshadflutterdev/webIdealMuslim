@@ -627,6 +627,46 @@ class _BukhariState extends State<Bukhari> {
                     );
                   } else if (!snapshot.hasData) {
                     return Center(child: Text("Sorry no data found"));
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text("Error found in data(we are fixing it)"),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: chaptersList.length,
+                      itemBuilder: (context, index) {
+                        final hadithlength = hadeesInChapter[index];
+                        final chapter = chaptersList[index];
+                        return Card(
+                          elevation: 3,
+                          color: Colors.white,
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Hadithdetails(
+                                    ChapterId: chapter.id.toString(),
+                                  ),
+                                ),
+                              );
+                            },
+                            title: Text(
+                              chapter.chapterEnglish ?? "No name",
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                            trailing: Text(
+                              hadithlength,
+                              style: TextStyle(
+                                fontFamily: AppFonts.arabicfont,
+                                fontSize: 16,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
                   }
                 },
               )
