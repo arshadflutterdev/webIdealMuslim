@@ -409,7 +409,6 @@ import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadithDetails.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sahihmuslim/sahmuslim_chapters_model.dart';
-import 'package:muslim/Data/EnglishModels/bukharShareef.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -560,10 +559,7 @@ class _BukhariState extends State<Bukhari> {
     "7268-7370",
     "7371-7563",
   ];
-  //below data and everything related website
-  //below list of chapters
-  List<String> bukhariChapterList = [];
-  //chapter fetch from apis
+
   Future<void> getBukhariChapters() async {
     final apiKey =
         "\$2y\$10\$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
@@ -573,7 +569,11 @@ class _BukhariState extends State<Bukhari> {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsondecode = jsonDecode(response.body);
-        final bukhariData = BukhariChaptersEnglish.fromJson(jsondecode);
+        final bukhariData = Sahimuslimchapterlist.fromJson(jsondecode);
+        setState(() {
+          chaptersList = bukhariData.chapters ?? [];
+          print("here is total lentght of cheapters ${chaptersList.length}");
+        });
       }
     } catch (e) {
       e.toString();
@@ -617,7 +617,7 @@ class _BukhariState extends State<Bukhari> {
           backgroundColor: Colors.white,
         ),
         body: kIsWeb
-            ? Center(child: Text("now on web"))
+            ? Center(child: Text("Now on web"))
             : isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.green),
