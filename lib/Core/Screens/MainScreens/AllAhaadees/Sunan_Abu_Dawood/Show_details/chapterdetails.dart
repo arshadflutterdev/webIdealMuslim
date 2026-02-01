@@ -134,7 +134,54 @@ class _SunanChapterDetailsState extends State<SunanChapterDetails> {
           ),
         ),
         backgroundColor: Colors.white,
-        body: isLoading
+        body: kIsWeb
+            ? FutureBuilder(
+                future: abuDawoodChapters(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(color: Colors.green),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: chapterList.length,
+                    itemBuilder: (context, index) {
+                      final chapter = chapterList[index];
+                      final hadithlength = abuDawoodHadithRanges[index];
+
+                      return Card(
+                        elevation: 3,
+                        color: Colors.white,
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SunanHadithDetails(
+                                  chapterno: chapter.chapterNumber ?? '',
+                                ),
+                              ),
+                            );
+                          },
+                          title: Text(
+                            chapter.chapterEnglish ?? "No name",
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          trailing: Text(
+                            hadithlength,
+                            style: TextStyle(
+                              fontFamily: AppFonts.arabicfont,
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              )
+            : isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.green),
               )
