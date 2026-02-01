@@ -409,6 +409,7 @@ import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadithDetails.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sahihmuslim/sahmuslim_chapters_model.dart';
+import 'package:muslim/Data/EnglishModels/bukharShareef.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -571,8 +572,8 @@ class _BukhariState extends State<Bukhari> {
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        final jsondecode = jsonDecode(response.body);
-        print("here is json decode $jsondecode");
+        final Map<String, dynamic> jsondecode = jsonDecode(response.body);
+        final bukhariData = BukhariChaptersEnglish.fromJson(jsondecode);
       }
     } catch (e) {
       e.toString();
