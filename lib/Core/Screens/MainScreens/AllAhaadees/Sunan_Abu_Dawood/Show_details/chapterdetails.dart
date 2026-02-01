@@ -44,23 +44,23 @@ class _SunanChapterDetailsState extends State<SunanChapterDetails> {
   }
 
   //related web
-  Future abuDawoodChapters() async {
-    final apikeys =
-        r"https://hadithapi.com/api/abu-dawood/chapters?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
-    try {
-      final response = await http.get(Uri.parse(apikeys));
-      if (response.statusCode == 200) {
-        print("Apis works");
-      }
-    } catch (e) {
-      e.toString();
-    }
-  }
+  // Future abuDawoodChapters() async {
+  //   final apikeys =
+  //       r"https://hadithapi.com/api/abu-dawood/chapters?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+  //   try {
+  //     final response = await http.get(Uri.parse(apikeys));
+  //     if (response.statusCode == 200) {
+  //       print("Apis works");
+  //     }
+  //   } catch (e) {
+  //     e.toString();
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
-    abuDawoodChapters();
+    // abuDawoodChapters();
     getdownloadedChapters();
   }
 
