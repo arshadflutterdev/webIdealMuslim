@@ -135,7 +135,6 @@ class _SahihMuslimChaptersssState extends State<SahihMuslimChaptersss> {
   void initState() {
     super.initState();
     loadofflinechapters();
-    muslimChapterList();
   }
 
   @override

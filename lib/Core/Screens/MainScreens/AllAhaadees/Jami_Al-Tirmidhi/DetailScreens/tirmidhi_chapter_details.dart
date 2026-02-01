@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_details.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/Models/chapter_model.dart';
@@ -66,7 +68,11 @@ class _TirmidhiChapterDetailsState extends State<TirmidhiChapterDetails> {
       final response = await http.get(Uri.parse(tirmidhiApis));
       if (response.statusCode == 200) {
         print("Your apis are working correctly");
+        final jsondecode = jsonDecode(response.body);
+        final tirmidhiData = TirmidhiModel.fromJson(jsondecode);
+        chaptersList = tirmidhiData.chapters ?? [];
       }
+      return chaptersList;
     } catch (e) {
       e.toString();
     }
@@ -147,7 +153,55 @@ class _TirmidhiChapterDetailsState extends State<TirmidhiChapterDetails> {
           ),
         ),
         backgroundColor: Colors.white,
-        body: isLoading
+        body: kIsWeb
+            ? FutureBuilder(
+                future: getTirmidhichapters(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (!snapshot.hasData) {
+                    return Center(child: Text("No data found"));
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("Temprory Error Occured"));
+                  }
+                  return ListView.builder(
+                    itemCount: chaptersList.length,
+                    itemBuilder: (context, index) {
+                      final chapter = chaptersList[index];
+                      final hadithlength = tirmidhiHadithRanges[index];
+                      return Card(
+                        elevation: 3,
+                        color: Colors.white,
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TirmidhiDetails(
+                                  ChapterIdSS: chapter.chapterNumber ?? '',
+                                ),
+                              ),
+                            );
+                          },
+                          title: Text(
+                            chapter.chapterEnglish ?? "No name",
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          trailing: Text(
+                            hadithlength,
+                            style: TextStyle(
+                              fontFamily: AppFonts.arabicfont,
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              )
+            : isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.green),
               )
