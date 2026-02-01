@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:muslim/Core/Widgets/TextFields/customtextfield.dart';
@@ -54,10 +55,28 @@ class _IbneMajahState extends State<IbneMajah> {
     }
   }
 
+  //related web
+  Future getMajahChapters() async {
+    final apiKey =
+        r"https://hadithapi.com/api/ibn-e-majah/chapters?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+    try {
+      final response = await http.get(Uri.parse(apiKey));
+      if (response.statusCode == 200) {
+        final jsondecod = jsonDecode(response.body);
+        final majahData = MajahChapterModel.fromJson(jsondecod);
+        chaptersList = majahData.chapters ?? [];
+      }
+      return chaptersList;
+    } catch (e) {
+      e.toString();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     getDownloadChapters();
+    getMajahChapters();
   }
 
   List<String> ibnMajahHadithRanges = [
@@ -129,55 +148,109 @@ class _IbneMajahState extends State<IbneMajah> {
         ),
 
         backgroundColor: isLoading ? Colors.white : Colors.white,
-        body: Builder(
-          builder: (context) {
-            if (isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(color: Colors.green),
-              );
-            } else if (hasError) {
-              return const Center(child: Text("No Internet Connection ❌"));
-            } else if (chaptersList.isEmpty) {
-              return const Center(child: Text("No chapters found"));
-            }
+        body: kIsWeb
+            ? FutureBuilder(
+                future: getMajahChapters(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(color: Colors.green),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return Center(child: Text("Data no found"));
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("Temprory eroor "));
+                  }
+                  return ListView.builder(
+                    itemCount: chaptersList.length,
+                    itemBuilder: (context, index) {
+                      final hadithlength = ibnMajahHadithRanges[index];
 
-            return ListView.builder(
-              itemCount: chaptersList.length,
-              itemBuilder: (context, index) {
-                final hadithlength = ibnMajahHadithRanges[index];
-
-                final chapter = chaptersList[index];
-                return Card(
-                  elevation: 3,
-                  color: Colors.white,
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              MajahDetailed(chapterIdss: chapter.chapterNumber),
+                      final chapter = chaptersList[index];
+                      return Card(
+                        elevation: 3,
+                        color: Colors.white,
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MajahDetailed(
+                                  chapterIdss: chapter.chapterNumber,
+                                ),
+                              ),
+                            );
+                          },
+                          title: Text(
+                            chapter.chapterEnglish ?? "No name",
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          trailing: Text(
+                            hadithlength,
+                            style: TextStyle(
+                              fontFamily: AppFonts.arabicfont,
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
                         ),
                       );
                     },
-                    title: Text(
-                      chapter.chapterEnglish ?? "No name",
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    trailing: Text(
-                      hadithlength,
-                      style: TextStyle(
-                        fontFamily: AppFonts.arabicfont,
-                        fontSize: 16,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
+                  );
+                },
+              )
+            : Builder(
+                builder: (context) {
+                  if (isLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: Colors.green),
+                    );
+                  } else if (hasError) {
+                    return const Center(
+                      child: Text("No Internet Connection ❌"),
+                    );
+                  } else if (chaptersList.isEmpty) {
+                    return const Center(child: Text("No chapters found"));
+                  }
+
+                  return ListView.builder(
+                    itemCount: chaptersList.length,
+                    itemBuilder: (context, index) {
+                      final hadithlength = ibnMajahHadithRanges[index];
+
+                      final chapter = chaptersList[index];
+                      return Card(
+                        elevation: 3,
+                        color: Colors.white,
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MajahDetailed(
+                                  chapterIdss: chapter.chapterNumber,
+                                ),
+                              ),
+                            );
+                          },
+                          title: Text(
+                            chapter.chapterEnglish ?? "No name",
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          trailing: Text(
+                            hadithlength,
+                            style: TextStyle(
+                              fontFamily: AppFonts.arabicfont,
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
       ),
       onWillPop: () async {
         AdController().tryShowAd();
