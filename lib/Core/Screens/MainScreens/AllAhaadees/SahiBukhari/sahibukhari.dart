@@ -618,7 +618,18 @@ class _BukhariState extends State<Bukhari> {
           backgroundColor: Colors.white,
         ),
         body: kIsWeb
-            ? Center(child: Text("Now on web"))
+            ? FutureBuilder(
+                future: getBukhariChapters(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(color: Colors.green),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return Center(child: Text("Sorry no data found"));
+                  }
+                },
+              )
             : isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.green),
