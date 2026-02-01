@@ -10,6 +10,7 @@ import 'package:gap/gap.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:http/http.dart' as http;
 
 class Hadithdetails extends StatefulWidget {
   final String? ChapterId;
@@ -106,11 +107,25 @@ class _HadithdetailsState extends State<Hadithdetails> {
       });
     }
   }
+  //below is for web dear
+  Future<void>bukhariDetails()async{
+    final hadithapis="https://hadithapi.com/api/hadiths/?apiKey=\$2y\$10$\pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+    try{
+      final response=await http.get(Uri.parse(hadithapis));
+      if(response.statusCode==200){
+        print("you got response successfully");
+
+      }
+    }catch(e){
+      e.toString();
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     getdownloadhadith();
+    bukhariDetails();
   }
 
   //here is bottom sheet for copy
