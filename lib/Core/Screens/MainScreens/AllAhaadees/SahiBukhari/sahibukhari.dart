@@ -572,6 +572,7 @@ class _BukhariState extends State<Bukhari> {
         final bukhariData = Sahimuslimchapterlist.fromJson(jsondecode);
         setState(() {
           chaptersList = bukhariData.chapters ?? [];
+          isLoading = false;
           print("here is total lentght of cheapters ${chaptersList.length}");
         });
       }
