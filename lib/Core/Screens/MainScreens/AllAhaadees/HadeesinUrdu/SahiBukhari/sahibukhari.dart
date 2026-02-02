@@ -65,6 +65,7 @@ class _BukhariUrduState extends State<BukhariUrdu> {
         final jsondecod = jsonDecode(response.body);
         final hadithData = Sahimuslimchapterlist.fromJson(jsondecod);
         chaptersList = hadithData.chapters ?? [];
+        print(chaptersList.length);
         return chaptersList;
       }
     } catch (e) {
