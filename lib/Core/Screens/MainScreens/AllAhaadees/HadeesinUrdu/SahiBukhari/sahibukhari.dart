@@ -228,7 +228,7 @@ class _BukhariUrduState extends State<BukhariUrdu> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Hadithdetails(
+                                builder: (context) => HadithdetailsUrdu(
                                   ChapterId: chapter.id.toString(),
                                 ),
                               ),

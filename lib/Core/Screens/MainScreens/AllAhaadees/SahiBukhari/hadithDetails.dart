@@ -111,38 +111,36 @@ class _HadithdetailsState extends State<Hadithdetails> {
   }
 
   //lets get hadiths from api for web
+  // 1. URL change karein (bukhari-hadiths)
+  final String apiUrl = "https://hadith-proxy-mpc6.vercel.app/bukhari-hadiths";
+
   Future<void> getHadiths() async {
-    print("Connecting via AllOrigins...");
     setState(() => isLoading = true);
 
-    final String targetUrl =
-        r"https://hadithapi.com/api/hadiths/?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
-
-    // AllOrigins ka URL
-    final String proxyUrl =
-        "https://api.allorigins.win/get?url=${Uri.encodeComponent(targetUrl)}";
-
+    // 2. URL mein Chapter ID add karein taake wahi data aaye jo chahiye
+    final String finalUrl = "$apiUrl?chapter=${widget.ChapterId}";
     try {
-      final response = await http.get(Uri.parse(proxyUrl));
+      print("Fetching from: $finalUrl");
+      final response = await http.get(Uri.parse(finalUrl));
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final Map<String, dynamic> decodedData = jsonDecode(response.body);
 
-        // Step: contents se asli JSON nikalna
-        final String actualJsonString = responseData['contents'];
-        final Map<String, dynamic> decodedData = jsonDecode(actualJsonString);
+        // API response mein 'hadiths' ke andar 'data' hota hai
+        if (decodedData['hadiths'] != null &&
+            decodedData['hadiths']['data'] != null) {
+          final List<dynamic> fetchedList = decodedData['hadiths']['data'];
 
-        if (decodedData['hadiths'] != null) {
-          final List<dynamic> apiList = decodedData['hadiths']['data'];
           setState(() {
-            haditsss = apiList.map((h) => Data.fromJson(h)).toList();
+            // Ab filter lagane ki zaroorat nahi, API khud filter karke degi
+            haditsss = fetchedList.map((h) => Data.fromJson(h)).toList();
             isLoading = false;
           });
-          print("Mubarak ho! Data load ho gaya.");
+          print("Data Loaded: ${haditsss.length} hadiths");
         }
       }
     } catch (e) {
-      print("Abhi bhi masla hai: $e");
+      print("Error: $e");
       setState(() => isLoading = false);
     }
   }
