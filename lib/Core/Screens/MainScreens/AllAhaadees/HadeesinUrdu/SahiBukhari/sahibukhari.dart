@@ -63,6 +63,7 @@ class _BukhariUrduState extends State<BukhariUrdu> {
       if (response.statusCode == 200) {
         print("data arha h yaaha");
         final jsondecod = jsonDecode(response.body);
+        print(jsondecod);
         final hadithData = Sahimuslimchapterlist.fromJson(jsondecod);
         chaptersList = hadithData.chapters ?? [];
         print(chaptersList.length);
