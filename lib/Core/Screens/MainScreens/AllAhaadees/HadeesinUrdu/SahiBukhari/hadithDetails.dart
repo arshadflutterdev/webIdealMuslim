@@ -82,35 +82,36 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
     }
   }
 
-  final String apiUrl = "https://hadith-proxy-mpc6.vercel.app/bukhari-hadiths";
+  // 1. Base Proxy URL
+  final String proxyBase = "https://hadith-proxy-mpc6.vercel.app/api-proxy";
 
-  Future<void> getHadiths() async {
+  Future<void> getAnyHadiths(String bookSlug, String chapterId) async {
+    if (!mounted) return;
     setState(() => isLoading = true);
 
-    // 2. URL mein Chapter ID add karein taake wahi data aaye jo chahiye
-    final String finalUrl = "$apiUrl?chapter=${widget.ChapterId}";
-    try {
-      print("Fetching from: $finalUrl");
-      final response = await http.get(Uri.parse(finalUrl));
+    final String finalUrl =
+        "$proxyBase/hadiths?book=$bookSlug&chapter=$chapterId";
 
+    try {
+      final response = await http.get(Uri.parse(finalUrl));
       if (response.statusCode == 200) {
         final Map<String, dynamic> decodedData = jsonDecode(response.body);
 
-        // API response mein 'hadiths' ke andar 'data' hota hai
         if (decodedData['hadiths'] != null &&
             decodedData['hadiths']['data'] != null) {
           final List<dynamic> fetchedList = decodedData['hadiths']['data'];
 
           setState(() {
-            // Ab filter lagane ki zaroorat nahi, API khud filter karke degi
             haditsss = fetchedList.map((h) => Data.fromJson(h)).toList();
             isLoading = false;
           });
-          print("Data Loaded: ${haditsss.length} hadiths");
         }
+      } else {
+        print("Web Error: ${response.statusCode}");
+        setState(() => isLoading = false);
       }
     } catch (e) {
-      print("Error: $e");
+      print("Fetch Error: $e");
       setState(() => isLoading = false);
     }
   }
@@ -119,7 +120,7 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
   void initState() {
     super.initState();
     if (kIsWeb) {
-      getHadiths();
+      getAnyHadiths("sahih-bukhari", widget.ChapterId ?? "1");
     } else {
       getdownloadhadith();
     }
