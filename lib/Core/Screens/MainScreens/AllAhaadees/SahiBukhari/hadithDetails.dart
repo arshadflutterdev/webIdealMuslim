@@ -111,17 +111,39 @@ class _HadithdetailsState extends State<Hadithdetails> {
   }
 
   //lets get hadiths from api for web
-  Future getHadiths() async {
-    print("Attempting to call API...");
-    final String apiUrl =
+  Future<void> getHadiths() async {
+    print("Connecting via AllOrigins...");
+    setState(() => isLoading = true);
+
+    final String targetUrl =
         r"https://hadithapi.com/api/hadiths/?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+
+    // AllOrigins ka URL
+    final String proxyUrl =
+        "https://api.allorigins.win/get?url=${Uri.encodeComponent(targetUrl)}";
+
     try {
-      final response = await http.get(Uri.parse(apiUrl));
+      final response = await http.get(Uri.parse(proxyUrl));
+
       if (response.statusCode == 200) {
-        print("Congratulations your apis are working");
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+        // Step: contents se asli JSON nikalna
+        final String actualJsonString = responseData['contents'];
+        final Map<String, dynamic> decodedData = jsonDecode(actualJsonString);
+
+        if (decodedData['hadiths'] != null) {
+          final List<dynamic> apiList = decodedData['hadiths']['data'];
+          setState(() {
+            haditsss = apiList.map((h) => Data.fromJson(h)).toList();
+            isLoading = false;
+          });
+          print("Mubarak ho! Data load ho gaya.");
+        }
       }
     } catch (e) {
-      e.toString();
+      print("Abhi bhi masla hai: $e");
+      setState(() => isLoading = false);
     }
   }
 
