@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:muslim/Data/Models/Sahhihmuslim/hadihtdetailmodel.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:http/http.dart' as http;
 
 class Sahimuslimdetails extends StatefulWidget {
   final String? ChapterIds;
@@ -80,10 +82,47 @@ class _SahimuslimdetailsState extends State<Sahimuslimdetails> {
     }
   }
 
+  final String apiUrl = "https://hadith-proxy-mpc6.vercel.app/muslim-hadiths";
+
+  Future<void> getHadiths() async {
+    setState(() => isLoading = true);
+
+    // 2. URL mein Chapter ID add karein taake wahi data aaye jo chahiye
+    final String finalUrl = "$apiUrl?chapter=${widget.ChapterIds}";
+    try {
+      print("Fetching from: $finalUrl");
+      final response = await http.get(Uri.parse(finalUrl));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> decodedData = jsonDecode(response.body);
+
+        // API response mein 'hadiths' ke andar 'data' hota hai
+        if (decodedData['hadiths'] != null &&
+            decodedData['hadiths']['data'] != null) {
+          final List<dynamic> fetchedList = decodedData['hadiths']['data'];
+
+          setState(() {
+            // Ab filter lagane ki zaroorat nahi, API khud filter karke degi
+            haditsss = fetchedList.map((h) => Data.fromJson(h)).toList();
+            isLoading = false;
+          });
+          print("Data Loaded: ${haditsss.length} hadiths");
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
+      setState(() => isLoading = false);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    getdownloadhadith();
+    if (kIsWeb) {
+      getHadiths();
+    } else {
+      getdownloadhadith();
+    }
   }
 
   //here is function for copy
