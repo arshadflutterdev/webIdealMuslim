@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:http/http.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahiBukhari/hadithDetails.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadithDetails.dart';
@@ -7,6 +8,7 @@ import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sahihmuslim/sahmuslim_chapters_model.dart';
+import 'package:http/http.dart' as http;
 
 class BukhariUrdu extends StatefulWidget {
   final String title;
@@ -52,10 +54,29 @@ class _BukhariUrduState extends State<BukhariUrdu> {
     }
   }
 
+  //below related web
+  Future bukhariChapters() async {
+    final apiKyes =
+        r"https://hadithapi.com/api/sahih-bukhari/chapters?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+    try {
+      final response = await http.get(Uri.parse(apiKyes));
+      if (response.statusCode == 200) {
+        print("data arha h yaaha");
+        final jsondecod = jsonDecode(response.body);
+        final hadithData = Sahimuslimchapterlist.fromJson(jsondecod);
+        chaptersList = hadithData.chapters ?? [];
+        return chaptersList;
+      }
+    } catch (e) {
+      print("error h yaha $e");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    loadofflinechapters();
+    // loadofflinechapters();
+    bukhariChapters();
     // loadChapters();
   }
 
