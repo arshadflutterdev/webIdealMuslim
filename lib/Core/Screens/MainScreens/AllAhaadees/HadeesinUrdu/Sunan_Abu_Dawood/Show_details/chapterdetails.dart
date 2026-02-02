@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Abu_Dawood/Show_details/sunan_hadith_details.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Models/chapters_model.dart';
@@ -31,19 +32,40 @@ class _SunanChapterDetailsUrduState extends State<SunanChapterDetailsUrdu> {
       hasError = false;
     });
     try {
-      final dir = await getApplicationDocumentsDirectory();
-      final file = File("${dir.path}/abu-dawood.json");
-      final fileContant = await file.readAsString();
-      final chaptersss = jsonDecode(fileContant);
-      final chapterssList = SunanChapters.fromJson(chaptersss);
-      setState(() {
-        chapterList = chapterssList.chapters ?? [];
-        print("here is All chapters $chapterList");
-        isLoading = false;
-        // hasError = true;
-      });
+      if (kIsWeb) {
+        abuDawoodChapters();
+      } else {
+        final dir = await getApplicationDocumentsDirectory();
+        final file = File("${dir.path}/abu-dawood.json");
+        final fileContant = await file.readAsString();
+        final chaptersss = jsonDecode(fileContant);
+        final chapterssList = SunanChapters.fromJson(chaptersss);
+        setState(() {
+          chapterList = chapterssList.chapters ?? [];
+          print("here is All chapters $chapterList");
+          isLoading = false;
+          // hasError = true;
+        });
+      }
     } catch (e) {
       throw Exception("Failed to fetch data ${e.toString()}");
+    }
+  }
+
+  Future abuDawoodChapters() async {
+    final apikeys =
+        r"https://hadithapi.com/api/abu-dawood/chapters?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+    try {
+      final response = await http.get(Uri.parse(apikeys));
+      if (response.statusCode == 200) {
+        final jsondecode = jsonDecode(response.body);
+        print(jsondecode);
+        final hadithData = SunanChapters.fromJson(jsondecode);
+        chapterList = hadithData.chapters ?? [];
+      }
+      return chapterList;
+    } catch (e) {
+      e.toString();
     }
   }
 
@@ -51,6 +73,7 @@ class _SunanChapterDetailsUrduState extends State<SunanChapterDetailsUrdu> {
   void initState() {
     super.initState();
     getdownloadedChapters();
+    abuDawoodChapters();
   }
 
   //hadiths range in chapters
