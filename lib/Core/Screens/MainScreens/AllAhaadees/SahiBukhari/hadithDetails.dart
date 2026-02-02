@@ -12,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 
 class Hadithdetails extends StatefulWidget {
   final String? ChapterId;
@@ -111,10 +112,10 @@ class _HadithdetailsState extends State<Hadithdetails> {
 
   //lets get hadiths from api for web
   Future getHadiths() async {
-    final apiKey =
+    final String apiUrl =
         r"https://hadithapi.com/api/hadiths/?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
     try {
-      final response = await http.get(Uri.parse(apiKey));
+      final response = await http.get(Uri.parse(apiUrl));
       if (response.statusCode == 200) {
         print("Congratulations your apis are working");
       }
@@ -511,36 +512,6 @@ class _HadithdetailsState extends State<Hadithdetails> {
                                   icon: const Icon(Icons.copy),
                                 ),
 
-                                //                                 IconButton(
-                                //                                   onPressed: () async {
-                                //                                     final hadeesText =
-                                //                                         """
-
-                                // Hadith No: ${item.hadithNumber}
-                                // Status: ${item.status}
-
-                                // Arabic:
-                                // ${item.hadithArabic}
-
-                                // English Translation:
-                                // ${item.headingEnglish}
-
-                                // 🌙 Shared via Muslim App – Be Connected with Allah
-                                // """;
-                                //                                     await Clipboard.setData(
-                                //                                       ClipboardData(text: hadeesText),
-                                //                                     );
-                                //                                     ScaffoldMessenger.of(context).showSnackBar(
-                                //                                       const SnackBar(
-                                //                                         content: Text(
-                                //                                           "Hadith copied to clipboard ✅",
-                                //                                         ),
-                                //                                         duration: Duration(seconds: 2),
-                                //                                       ),
-                                //                                     );
-                                //                                   },
-                                //                                   icon: const Icon(Icons.copy),
-                                //                                 ),
                                 const Spacer(),
                                 IconButton(
                                   onPressed: () {
