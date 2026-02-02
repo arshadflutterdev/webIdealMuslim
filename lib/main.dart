@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:muslim/Core/Const/app_audio.dart';
+import 'package:muslim/Core/Screens/MainScreens/BottomNavBar/bottomnav.dart';
 import 'package:muslim/Core/Screens/MainScreens/Quran/Quran_e_Majeed.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:muslim/splashscreen.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: QuranEMajeed(),
+      home: Bottomnav(),
     );
   }
 }
