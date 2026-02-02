@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadith_details_model.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
@@ -125,8 +126,11 @@ class _HadithdetailsState extends State<Hadithdetails> {
   @override
   void initState() {
     super.initState();
-    getdownloadhadith();
-    getHadiths();
+    if (kIsWeb) {
+      getHadiths();
+    } else {
+      getdownloadhadith();
+    }
   }
 
   //here is bottom sheet for copy
