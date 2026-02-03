@@ -552,68 +552,71 @@ class _TasbeehState extends State<Tasbeeh> {
                                     }
                                   }
                                 },
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: constraints.maxHeight * 0.02,
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Container(
-                                          height: 100,
-                                          width: 400,
-                                          color: Colors.green,
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    counters[currentIndex]
-                                                        .toString(),
-                                                    style: Apptextstyle.title
-                                                        .copyWith(
-                                                          color: Colors.black54,
-                                                          fontWeight:
-                                                              FontWeight.w300,
-                                                          fontSize: 50,
-                                                        ),
-                                                  ),
-                                                  const Text(
-                                                    "/",
-                                                    style: TextStyle(
-                                                      fontSize: 45,
-                                                      color: Colors.black38,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical:
+                                              constraints.maxHeight * 0.02,
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Container(
+                                            height: 100,
+                                            width: 400,
+                                            color: Colors.white,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      counters[currentIndex]
+                                                          .toString(),
+                                                      style: Apptextstyle.title
+                                                          .copyWith(
+                                                            color:
+                                                                Colors.black54,
+                                                            fontWeight:
+                                                                FontWeight.w300,
+                                                            fontSize: 50,
+                                                          ),
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    selectedNumbers[currentIndex]
-                                                        .toString(),
-                                                    style: Apptextstyle.title
-                                                        .copyWith(
-                                                          color: Colors.black54,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Text("Round :"),
-                                                  Text(" $round"),
-                                                ],
-                                              ),
-                                            ],
+                                                    const Text(
+                                                      "/",
+                                                      style: TextStyle(
+                                                        fontSize: 45,
+                                                        color: Colors.black38,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      selectedNumbers[currentIndex]
+                                                          .toString(),
+                                                      style: Apptextstyle.title
+                                                          .copyWith(
+                                                            color:
+                                                                Colors.black54,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                          ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    const Text("Round :"),
+                                                    Text(" $round"),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 2),
-                                    SingleChildScrollView(
-                                      child: AspectRatio(
+                                      const SizedBox(height: 2),
+                                      AspectRatio(
                                         aspectRatio: 2.5,
                                         child: AnimatedBeadsCounter(
                                           key: beadsKey,
@@ -631,8 +634,8 @@ class _TasbeehState extends State<Tasbeeh> {
                                           },
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
