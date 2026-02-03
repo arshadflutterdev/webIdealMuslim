@@ -221,14 +221,14 @@ class _TasbeehState extends State<Tasbeeh> {
             ? Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 0,
-                  vertical: height * 0.020,
+                  // vertical: height * 0.010,
                 ),
                 child: Column(
                   children: [
-                    Gap(height * 0.012),
+                    // Gap(height * 0.002),
                     // Top Container with refresh, sound, vibration, font
                     Container(
-                      height: height * 0.12,
+                      height: height * 0.10,
                       width: double.infinity,
                       color: Colors.white,
                       child: Padding(
@@ -237,12 +237,6 @@ class _TasbeehState extends State<Tasbeeh> {
                           children: [
                             IconButton(
                               onPressed: () {
-                                // RewardedAdServices.showRewardAd(
-                                //   onUserEarnedReward: (rewardCoinsd) {
-                                //     debugPrint("User earned $rewardCoinsd");
-                                //   },
-                                // );
-
                                 AdController().tryShowAd();
 
                                 Navigator.pop(context);
@@ -283,13 +277,6 @@ class _TasbeehState extends State<Tasbeeh> {
                                                 counters[currentIndex] = 0;
                                               });
                                               savedata();
-                                              // RewardedAdServices.showRewardAd(
-                                              //   onUserEarnedReward: (rewardCoins) {
-                                              //     debugPrint(
-                                              //       "User gets reward $rewardCoins",
-                                              //     );
-                                              //   },
-                                              // );
 
                                               AdController().tryShowAd();
 
