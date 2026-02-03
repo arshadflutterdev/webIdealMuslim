@@ -366,47 +366,51 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                       : booksList.isEmpty
                       ? const Center(child: Text("No Hadith books found"))
                       : (kIsWeb)
-                      ? GridView.builder(
-                          itemCount: booksList.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                childAspectRatio: 2.5,
-                                crossAxisSpacing: 10, // کالمز کے درمیان فاصلہ
-                                mainAxisSpacing: 10,
-                              ),
-                          itemBuilder: (context, index) {
-                            final book = booksList[index];
-                            final slug = book.bookSlug ?? "";
-                            return Card(
-                              color: Colors.white,
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: ListTile(
-                                onTap: () {
-                                  handleBookTap(slug: slug, isUrdu: false);
-                                },
-                                trailing: Expanded(
-                                  child: Text(
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-
-                                    book.chaptersCount ?? "",
-                                    style: TextStyle(fontSize: height * 0.030),
+                      ? SingleChildScrollView(
+                          child: Wrap(
+                            spacing: 10, // کارڈز کے درمیان افقی فاصلہ
+                            runSpacing: 10, // لائنوں کے درمیان عمودی فاصلہ
+                            children: booksList.map((book) {
+                              final index = booksList.indexOf(book);
+                              final String slug = book.bookSlug ?? "";
+                              return SizedBox(
+                                // یہاں ہم چوڑائی (Width) فکس کریں گے تاکہ 3 کالمز بنیں
+                                width:
+                                    (MediaQuery.of(context).size.width / 3) -
+                                    15,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    handleBookTap(slug: slug, isUrdu: false);
+                                  },
+                                  child: Card(
+                                    color: Colors.white,
+                                    elevation: 5,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize
+                                            .min, // یہ ہائٹ کو ٹیکسٹ کے مطابق رکھے گا
+                                        children: [
+                                          Text(
+                                            book.bookName ?? "",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: namecolors[index],
+                                            ),
+                                          ),
+                                          Text(
+                                            book.chaptersCount ?? "",
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                title: Text(
-                                  book.bookName ?? "",
-                                  style: TextStyle(
-                                    fontSize: height * 0.030,
-                                    color: namecolors[index],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
+                              );
+                            }).toList(),
+                          ),
                         )
                       : ListView.builder(
                           itemCount: booksList.length,
