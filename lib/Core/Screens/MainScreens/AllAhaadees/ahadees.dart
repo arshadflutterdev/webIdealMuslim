@@ -566,12 +566,20 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                         mainAxisSize: MainAxisSize
                                             .min, // یہ ہائٹ کو ٹیکسٹ کے مطابق رکھے گا
                                         children: [
-                                          Text(
-                                            book.bookName ?? "",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 22,
-                                              color: namecolors[index],
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 4,
+                                            ),
+                                            child: Text(
+                                              urduBookNames[slug] ??
+                                                  book.bookName ??
+                                                  "",
+
+                                              style: TextStyle(
+                                                fontFamily: AppFonts.urdufont,
+                                                fontSize: height * 0.040,
+                                                color: namecolors[index],
+                                              ),
                                             ),
                                           ),
                                           // Text(
