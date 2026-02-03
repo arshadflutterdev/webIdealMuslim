@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:muslim/Core/Services/rewarded_ad_services.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -598,107 +599,219 @@ class _TasbeehState extends State<Tasbeeh> {
                   width: double.infinity,
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      return SingleChildScrollView(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minHeight: constraints.maxHeight,
-                          ),
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              // ✅ CLICK ANYWHERE = LEFT BEAD TAP (+1)
-                              if (!soundselected) tick();
-                              if (!selectvibr) vibr();
-                              beadsKey.currentState?.triggerLeftBeadTap();
-                            },
-                            onHorizontalDragEnd: (details) {
-                              if (details.primaryVelocity != null) {
-                                if (details.primaryVelocity! < 0) {
-                                  // ✅ SWIPE LEFT → DECREMENT
-                                  // countermin();
+                      return kIsWeb
+                          ? ConstrainedBox(
+                              constraints: BoxConstraints(
+                                minHeight: constraints.maxHeight,
+                              ),
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  // ✅ CLICK ANYWHERE = LEFT BEAD TAP (+1)
                                   if (!soundselected) tick();
                                   if (!selectvibr) vibr();
-                                  beadsKey.currentState
-                                      ?.triggerRightBeadTap(); // move right bead left
-                                } else if (details.primaryVelocity! > 0) {
-                                  // ✅ SWIPE RIGHT → INCREMENT
-                                  // counterplus();
-                                  if (!soundselected) tick();
-                                  if (!selectvibr) vibr();
-                                  beadsKey.currentState
-                                      ?.triggerLeftBeadTap(); // move left bead right
-                                }
-                              }
-                            },
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: constraints.maxHeight * 0.02,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
+                                  beadsKey.currentState?.triggerLeftBeadTap();
+                                },
+                                onHorizontalDragEnd: (details) {
+                                  if (details.primaryVelocity != null) {
+                                    if (details.primaryVelocity! < 0) {
+                                      // ✅ SWIPE LEFT → DECREMENT
+                                      // countermin();
+                                      if (!soundselected) tick();
+                                      if (!selectvibr) vibr();
+                                      beadsKey.currentState
+                                          ?.triggerRightBeadTap(); // move right bead left
+                                    } else if (details.primaryVelocity! > 0) {
+                                      // ✅ SWIPE RIGHT → INCREMENT
+                                      // counterplus();
+                                      if (!soundselected) tick();
+                                      if (!selectvibr) vibr();
+                                      beadsKey.currentState
+                                          ?.triggerLeftBeadTap(); // move left bead right
+                                    }
+                                  }
+                                },
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: constraints.maxHeight * 0.02,
+                                      ),
+                                      child: Column(
                                         children: [
-                                          Text(
-                                            counters[currentIndex].toString(),
-                                            style: Apptextstyle.title.copyWith(
-                                              color: Colors.black54,
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 50,
-                                            ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                counters[currentIndex]
+                                                    .toString(),
+                                                style: Apptextstyle.title
+                                                    .copyWith(
+                                                      color: Colors.black54,
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      fontSize: 50,
+                                                    ),
+                                              ),
+                                              const Text(
+                                                "/",
+                                                style: TextStyle(
+                                                  fontSize: 45,
+                                                  color: Colors.black38,
+                                                ),
+                                              ),
+                                              Text(
+                                                selectedNumbers[currentIndex]
+                                                    .toString(),
+                                                style: Apptextstyle.title
+                                                    .copyWith(
+                                                      color: Colors.black54,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                              ),
+                                            ],
                                           ),
-                                          const Text(
-                                            "/",
-                                            style: TextStyle(
-                                              fontSize: 45,
-                                              color: Colors.black38,
-                                            ),
-                                          ),
-                                          Text(
-                                            selectedNumbers[currentIndex]
-                                                .toString(),
-                                            style: Apptextstyle.title.copyWith(
-                                              color: Colors.black54,
-                                              fontWeight: FontWeight.w400,
-                                            ),
+                                          Row(
+                                            children: [
+                                              const Text("Round :"),
+                                              Text(" $round"),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                      Row(
-                                        children: [
-                                          const Text("Round :"),
-                                          Text(" $round"),
-                                        ],
+                                    ),
+                                    const SizedBox(height: 2),
+                                    AspectRatio(
+                                      aspectRatio: 2.5,
+                                      child: AnimatedBeadsCounter(
+                                        key: beadsKey,
+                                        beadColor: tasbehcolor[selectedcolour],
+                                        onLeftBeadTap: () {
+                                          counterplus();
+                                          if (!soundselected) tick();
+                                          if (!selectvibr) vibr();
+                                        },
+                                        onRightBeadTap: () {
+                                          countermin(); // ✅ CHANGE HERE: right bead tap = decrement
+                                          if (!soundselected) tick();
+                                          if (!selectvibr) vibr();
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : SingleChildScrollView(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minHeight: constraints.maxHeight,
+                                ),
+                                child: GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    // ✅ CLICK ANYWHERE = LEFT BEAD TAP (+1)
+                                    if (!soundselected) tick();
+                                    if (!selectvibr) vibr();
+                                    beadsKey.currentState?.triggerLeftBeadTap();
+                                  },
+                                  onHorizontalDragEnd: (details) {
+                                    if (details.primaryVelocity != null) {
+                                      if (details.primaryVelocity! < 0) {
+                                        // ✅ SWIPE LEFT → DECREMENT
+                                        // countermin();
+                                        if (!soundselected) tick();
+                                        if (!selectvibr) vibr();
+                                        beadsKey.currentState
+                                            ?.triggerRightBeadTap(); // move right bead left
+                                      } else if (details.primaryVelocity! > 0) {
+                                        // ✅ SWIPE RIGHT → INCREMENT
+                                        // counterplus();
+                                        if (!soundselected) tick();
+                                        if (!selectvibr) vibr();
+                                        beadsKey.currentState
+                                            ?.triggerLeftBeadTap(); // move left bead right
+                                      }
+                                    }
+                                  },
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical:
+                                              constraints.maxHeight * 0.02,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  counters[currentIndex]
+                                                      .toString(),
+                                                  style: Apptextstyle.title
+                                                      .copyWith(
+                                                        color: Colors.black54,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        fontSize: 50,
+                                                      ),
+                                                ),
+                                                const Text(
+                                                  "/",
+                                                  style: TextStyle(
+                                                    fontSize: 45,
+                                                    color: Colors.black38,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  selectedNumbers[currentIndex]
+                                                      .toString(),
+                                                  style: Apptextstyle.title
+                                                      .copyWith(
+                                                        color: Colors.black54,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text("Round :"),
+                                                Text(" $round"),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      AspectRatio(
+                                        aspectRatio: 2.5,
+                                        child: AnimatedBeadsCounter(
+                                          key: beadsKey,
+                                          beadColor:
+                                              tasbehcolor[selectedcolour],
+                                          onLeftBeadTap: () {
+                                            counterplus();
+                                            if (!soundselected) tick();
+                                            if (!selectvibr) vibr();
+                                          },
+                                          onRightBeadTap: () {
+                                            countermin(); // ✅ CHANGE HERE: right bead tap = decrement
+                                            if (!soundselected) tick();
+                                            if (!selectvibr) vibr();
+                                          },
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                const SizedBox(height: 12),
-                                AspectRatio(
-                                  aspectRatio: 2.5,
-                                  child: AnimatedBeadsCounter(
-                                    key: beadsKey,
-                                    beadColor: tasbehcolor[selectedcolour],
-                                    onLeftBeadTap: () {
-                                      counterplus();
-                                      if (!soundselected) tick();
-                                      if (!selectvibr) vibr();
-                                    },
-                                    onRightBeadTap: () {
-                                      countermin(); // ✅ CHANGE HERE: right bead tap = decrement
-                                      if (!soundselected) tick();
-                                      if (!selectvibr) vibr();
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                              ),
+                            );
                     },
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class Bead {
@@ -44,7 +45,7 @@ class AnimatedBeadsCounterState extends State<AnimatedBeadsCounter> {
   Path buildCurvePath(Size size) {
     final double topMargin = baseBeadRadius + 8;
     return Path()
-      ..moveTo(0, size.height * 0.5)
+      ..moveTo(0, kIsWeb ? size.height * 0.3 : size.height * 0.5)
       ..quadraticBezierTo(
         size.width * 0.31,
         topMargin,
