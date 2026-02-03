@@ -612,32 +612,23 @@ class _TasbeehState extends State<Tasbeeh> {
                                       ),
                                     ),
                                     const SizedBox(height: 2),
-                                    Container(
-                                      height: 200,
-                                      width: double.infinity,
-                                      color: Colors.red,
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            AspectRatio(
-                                              aspectRatio: 2.5,
-                                              child: AnimatedBeadsCounter(
-                                                key: beadsKey,
-                                                beadColor:
-                                                    tasbehcolor[selectedcolour],
-                                                onLeftBeadTap: () {
-                                                  counterplus();
-                                                  if (!soundselected) tick();
-                                                  if (!selectvibr) vibr();
-                                                },
-                                                onRightBeadTap: () {
-                                                  countermin(); // ✅ CHANGE HERE: right bead tap = decrement
-                                                  if (!soundselected) tick();
-                                                  if (!selectvibr) vibr();
-                                                },
-                                              ),
-                                            ),
-                                          ],
+                                    SingleChildScrollView(
+                                      child: AspectRatio(
+                                        aspectRatio: 2.5,
+                                        child: AnimatedBeadsCounter(
+                                          key: beadsKey,
+                                          beadColor:
+                                              tasbehcolor[selectedcolour],
+                                          onLeftBeadTap: () {
+                                            counterplus();
+                                            if (!soundselected) tick();
+                                            if (!selectvibr) vibr();
+                                          },
+                                          onRightBeadTap: () {
+                                            countermin(); // ✅ CHANGE HERE: right bead tap = decrement
+                                            if (!soundselected) tick();
+                                            if (!selectvibr) vibr();
+                                          },
                                         ),
                                       ),
                                     ),
