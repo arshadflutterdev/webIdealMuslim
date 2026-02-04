@@ -423,16 +423,433 @@ class _TasbeehState extends State<Tasbeeh> {
                     // Azkar display
                     Container(
                       width: double.infinity,
-                      height: 200,
                       color: Colors.red,
                       child: Row(
                         children: [
-                          Gap(width * 0.15),
-                          Container(height: 180, width: 60, color: Colors.blue),
+                          Gap(width * 0.10),
+                          Container(
+                            width: 60,
+                            height: height * 0.29,
+                            color: Colors.blue,
+                            child: Column(
+                              children: [
+                                ContainerButton(
+                                  height: height * 0.075,
+                                  width: 60,
+                                  onPressed: () {
+                                    // Use modal bottom sheet again for consistency
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (BuildContext ctx) {
+                                        // ctx is the bottom-sheet context (use this when closing the sheet)
+                                        return Container(
+                                          height: height * 0.30,
+                                          padding: const EdgeInsets.all(12),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(16),
+                                            ),
+                                          ),
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                // header row with cancel / title / done
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    IconButton0(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                            ctx,
+                                                          ), // close sheet
+                                                      bicon: const Icon(
+                                                        Icons.cancel,
+                                                        size: 35,
+                                                        color: Colors.red,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 8),
+                                                    const Expanded(
+                                                      child: Center(
+                                                        child: Text(
+                                                          "Adjust Round numbers",
+                                                          style: TextStyle(
+                                                            fontSize: 20,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    IconButton0(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                            ctx,
+                                                          ), // close sheet
+                                                      bicon: const Icon(
+                                                        Icons.done,
+                                                        size: 35,
+                                                        color: Colors.green,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 8),
+
+                                                // quick-select buttons row 1
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                      ),
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              selectedNumbers[currentIndex] =
+                                                                  33;
+                                                            });
+                                                            savedata();
+                                                            Navigator.pop(
+                                                              ctx,
+                                                            ); // close sheet
+                                                          },
+                                                          child: CustomContainer0(
+                                                            height: 60,
+                                                            widht: width * 0.45,
+                                                            fillcolour:
+                                                                Colors.white,
+                                                            bcolor:
+                                                                Colors.black,
+                                                            child: Center(
+                                                              child: Text(
+                                                                "33",
+                                                                style: Apptextstyle
+                                                                    .title
+                                                                    .copyWith(
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 8),
+                                                      Expanded(
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              selectedNumbers[currentIndex] =
+                                                                  70;
+                                                            });
+                                                            savedata();
+                                                            Navigator.pop(ctx);
+                                                          },
+                                                          child: CustomContainer0(
+                                                            height: 60,
+                                                            widht: width * 0.45,
+                                                            fillcolour:
+                                                                Colors.white,
+                                                            bcolor:
+                                                                Colors.black,
+                                                            child: Center(
+                                                              child: Text(
+                                                                "70",
+                                                                style: Apptextstyle
+                                                                    .title
+                                                                    .copyWith(
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+
+                                                const Gap(8),
+
+                                                // quick-select buttons row 2
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                      ),
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              selectedNumbers[currentIndex] =
+                                                                  100;
+                                                            });
+                                                            savedata();
+                                                            Navigator.pop(ctx);
+                                                          },
+                                                          child: CustomContainer0(
+                                                            height: 60,
+                                                            widht: width * 0.45,
+                                                            fillcolour:
+                                                                Colors.white,
+                                                            bcolor:
+                                                                Colors.black,
+                                                            child: Center(
+                                                              child: Text(
+                                                                "100",
+                                                                style: Apptextstyle
+                                                                    .title
+                                                                    .copyWith(
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+
+                                                      const SizedBox(width: 8),
+
+                                                      // Customize button opens a dialog (dialogCtx)
+                                                      Expanded(
+                                                        child: CustomContainer0(
+                                                          height: 60,
+                                                          widht: width * 0.45,
+                                                          fillcolour:
+                                                              Colors.white,
+                                                          bcolor: Colors.black,
+                                                          child: CustomTextButton(
+                                                            onPressed: () {
+                                                              // show a dialog on top of the bottom sheet
+                                                              showDialog(
+                                                                context:
+                                                                    ctx, // important: use sheet ctx as parent
+                                                                builder:
+                                                                    (
+                                                                      BuildContext
+                                                                      dialogCtx,
+                                                                    ) {
+                                                                      return AlertDialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                            15,
+                                                                          ),
+                                                                        ),
+                                                                        backgroundColor:
+                                                                            Colors.white,
+                                                                        title: Row(
+                                                                          children: [
+                                                                            IconButton0(
+                                                                              onPressed: () => Navigator.pop(
+                                                                                dialogCtx,
+                                                                              ), // close dialog only
+                                                                              bicon: const Icon(
+                                                                                Icons.cancel,
+                                                                                size: 20,
+                                                                                color: Colors.red,
+                                                                              ),
+                                                                            ),
+                                                                            const Expanded(
+                                                                              child: Text(
+                                                                                "Adjust Round numbers",
+                                                                                style: TextStyle(
+                                                                                  fontSize: 12,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            IconButton0(
+                                                                              onPressed: () {
+                                                                                // Save value and then close dialog + bottom sheet
+                                                                                setState(
+                                                                                  () {
+                                                                                    selectedNumbers[currentIndex] =
+                                                                                        int.tryParse(
+                                                                                          numbercontroller.text,
+                                                                                        ) ??
+                                                                                        selectedNumbers[currentIndex];
+                                                                                  },
+                                                                                );
+                                                                                savedata();
+                                                                                Navigator.pop(
+                                                                                  dialogCtx,
+                                                                                ); // close dialog
+                                                                                Navigator.pop(
+                                                                                  ctx,
+                                                                                ); // close bottom sheet
+                                                                              },
+                                                                              bicon: const Icon(
+                                                                                Icons.done,
+                                                                                size: 20,
+                                                                                color: Colors.green,
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        content: TextField(
+                                                                          controller:
+                                                                              numbercontroller,
+                                                                          keyboardType:
+                                                                              TextInputType.number,
+                                                                          decoration: const InputDecoration(
+                                                                            hintText:
+                                                                                "Enter number",
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                              );
+                                                            },
+                                                            bchild: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: const [
+                                                                Text(
+                                                                  "Customize",
+                                                                  style: TextStyle(
+                                                                    fontSize:
+                                                                        18,
+                                                                    color: Colors
+                                                                        .black,
+                                                                  ),
+                                                                ),
+                                                                Gap(10),
+                                                                Icon(
+                                                                  Icons.edit,
+                                                                  size: 20,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  bchild: Icon(
+                                    Icons.edit_document,
+                                    size: height * 0.05,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                                Spacer(),
+                                ContainerButton(
+                                  height: height * 0.075,
+                                  width: 60,
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (BuildContext ctx) {
+                                        final sheetHeight =
+                                            MediaQuery.of(ctx).size.height *
+                                            0.25;
+
+                                        return Container(
+                                          height: sheetHeight,
+                                          decoration: const BoxDecoration(
+                                            color: Colors
+                                                .white, // ✅ Use visible color for sheet
+                                            borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(16),
+                                            ),
+                                          ),
+                                          child: GridView.builder(
+                                            padding: const EdgeInsets.all(8),
+                                            itemCount: tasbehcolor.length,
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 4,
+                                                  mainAxisSpacing: 8,
+                                                  crossAxisSpacing: 8,
+                                                  childAspectRatio: 1,
+                                                ),
+                                            itemBuilder: (context, index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    selectedcolour = index;
+                                                  });
+                                                  savedata();
+                                                  Navigator.pop(
+                                                    ctx,
+                                                  ); // ✅ safely close sheet
+                                                },
+                                                child: Container(
+                                                  margin: const EdgeInsets.all(
+                                                    4,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors.black
+                                                            .withOpacity(0.05),
+                                                        blurRadius: 4,
+                                                        offset: const Offset(
+                                                          0,
+                                                          2,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Center(
+                                                    child: CircleAvatar(
+                                                      radius:
+                                                          30, // ✅ slightly smaller to fit better
+                                                      backgroundColor:
+                                                          tasbehcolor[index],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  bchild: Icon(
+                                    Icons.color_lens_outlined,
+                                    size: height * 0.05,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           Expanded(
                             child: Padding(
                               padding: EdgeInsets.symmetric(
-                                horizontal: width * .02,
+                                horizontal: width * .08,
                               ),
                               child: CustomContainer0(
                                 height: height * 0.29,
@@ -497,7 +914,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                               ),
                                             ),
                                             SizedBox(
-                                              width: width * 0.34,
+                                              width: width * 0.20,
                                               child: const Divider(
                                                 color: Colors.white,
                                                 thickness: 2,
@@ -533,7 +950,7 @@ class _TasbeehState extends State<Tasbeeh> {
                           ),
                           Container(
                             height: 100,
-                            width: width * 0.15,
+                            width: width * 0.10,
                             color: Colors.blue,
                             child: Column(
                               children: [
@@ -573,6 +990,8 @@ class _TasbeehState extends State<Tasbeeh> {
                               ],
                             ),
                           ),
+
+                          Gap(width * 0.030),
                         ],
                       ),
                     ),
