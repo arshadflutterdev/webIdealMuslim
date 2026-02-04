@@ -432,6 +432,8 @@ class _TasbeehState extends State<Tasbeeh> {
                             height: height * 0.29,
                             color: Color(0xffFFFDF1),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 ContainerButton(
                                   height: height * 0.075,
@@ -759,7 +761,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                     color: Colors.black54,
                                   ),
                                 ),
-                                Spacer(),
+                                Gap(15),
                                 ContainerButton(
                                   height: height * 0.075,
                                   width: 60,
@@ -848,9 +850,7 @@ class _TasbeehState extends State<Tasbeeh> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: width * .06,
-                              ),
+                              padding: EdgeInsets.only(left: width * 0.060),
                               child: CustomContainer0(
                                 height: height * 0.29,
                                 widht: double.infinity,
@@ -948,21 +948,26 @@ class _TasbeehState extends State<Tasbeeh> {
                               ),
                             ),
                           ),
-
+                          Gap(6),
                           Container(
-                            height: 100,
-                            width: width * 0.19,
+                            // height: 100,
+                            width: width * 0.25,
+                            // color: Colors.blue,
                             color: Color(0xffFFFDF1),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
                                       counters[currentIndex].toString(),
                                       style: Apptextstyle.title.copyWith(
                                         color: Colors.black54,
                                         fontWeight: FontWeight.w300,
-                                        fontSize: 30,
+                                        fontSize: 58,
                                       ),
                                     ),
                                     const Text(
@@ -977,12 +982,14 @@ class _TasbeehState extends State<Tasbeeh> {
                                       style: Apptextstyle.title.copyWith(
                                         color: Colors.black54,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 16,
+                                        fontSize: 40,
                                       ),
                                     ),
                                   ],
                                 ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const Text("Round :"),
                                     Text(" $round"),
