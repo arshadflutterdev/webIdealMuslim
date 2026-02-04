@@ -483,7 +483,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: width * 0.58,
+                                      width: width * 0.34,
                                       child: const Divider(
                                         color: Colors.white,
                                         thickness: 2,
@@ -1161,6 +1161,7 @@ class _TasbeehState extends State<Tasbeeh> {
         // ---------- REPLACE your bottomSheet: Container(...) with this block ----------
         bottomSheet: Container(
           height: height * 0.10,
+
           // width: width,
           color: Colors.white,
           child: Padding(
@@ -1171,6 +1172,7 @@ class _TasbeehState extends State<Tasbeeh> {
                 ContainerButton(
                   height: height * 0.075,
                   width: 60,
+
                   onPressed: () {
                     // Use modal bottom sheet again for consistency
                     showModalBottomSheet(

@@ -6,8 +6,10 @@ class ContainerButton extends StatelessWidget {
   final Widget bchild;
   final double height;
   final double width;
+  final Color? colour;
   const ContainerButton({
     super.key,
+    this.colour,
     required this.onPressed,
     required this.bchild,
     required this.height,
@@ -29,7 +31,7 @@ class ContainerButton extends StatelessWidget {
               offset: Offset(0, 02),
             ),
           ],
-          color: Colors.white,
+          color: colour ?? Colors.white,
           borderRadius: BorderRadius.circular(15),
         ),
         child: bchild,
