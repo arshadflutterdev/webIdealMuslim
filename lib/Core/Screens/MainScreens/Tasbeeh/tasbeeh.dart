@@ -216,7 +216,7 @@ class _TasbeehState extends State<Tasbeeh> {
 
     return WillPopScope(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: kIsWeb ? Color(0xffFFFDF1) : Colors.white,
         body: kIsWeb
             ? Padding(
                 padding: EdgeInsets.symmetric(
@@ -230,7 +230,7 @@ class _TasbeehState extends State<Tasbeeh> {
                     Container(
                       // height: height * 0.12,
                       width: double.infinity,
-                      color: Colors.white,
+                      color: Color(0xffFFFDF1),
                       child: Row(
                         children: [
                           IconButton(
@@ -517,7 +517,7 @@ class _TasbeehState extends State<Tasbeeh> {
 
                     Expanded(
                       child: Container(
-                        color: Colors.red,
+                        color: Color(0xffFFFDF1),
                         width: double.infinity,
                         child: LayoutBuilder(
                           builder: (context, constraints) {
@@ -567,7 +567,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                           child: Container(
                                             height: 100,
                                             width: 400,
-                                            color: Colors.white,
+                                            color: Color(0xffFFFDF1),
                                             child: Column(
                                               children: [
                                                 Row(
