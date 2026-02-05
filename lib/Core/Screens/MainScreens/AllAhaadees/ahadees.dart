@@ -333,6 +333,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
         backgroundColor: const Color(0xFFFCF8F6),
         body: Column(
           children: [
+            Gap(25),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -358,6 +359,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                 ),
               ),
             ),
+            Gap(40),
             Expanded(
               child: TabBarView(
                 controller: _controller,
