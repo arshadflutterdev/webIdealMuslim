@@ -307,7 +307,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final orientation = MediaQuery.of(context).orientation;
-
+    bool isMobile = width < 600;
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -318,7 +318,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
             "Hadees",
             style: kIsWeb
                 ? TextStyle(
-                    fontSize: height * 0.080,
+                    fontSize: isMobile ? height * 0.040 : height * 0.080,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xFF2F3E34),
                   )
@@ -333,7 +333,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
         backgroundColor: const Color(0xFFFCF8F6),
         body: Column(
           children: [
-            Gap(25),
+            Gap(isMobile ? 00 : 25),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -382,9 +382,12 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                               final String slug = book.bookSlug ?? "";
                               return SizedBox(
                                 // یہاں ہم چوڑائی (Width) فکس کریں گے تاکہ 3 کالمز بنیں
-                                width:
-                                    (MediaQuery.of(context).size.width / 3) -
-                                    15,
+                                height: isMobile ? 80 : 50,
+                                width: isMobile
+                                    ? (MediaQuery.of(context).size.width / 1) -
+                                          15
+                                    : (MediaQuery.of(context).size.width / 3) -
+                                          15,
                                 child: GestureDetector(
                                   onTap: () {
                                     handleBookTap(slug: slug, isUrdu: false);
@@ -395,6 +398,10 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         mainAxisSize: MainAxisSize
                                             .min, // یہ ہائٹ کو ٹیکسٹ کے مطابق رکھے گا
                                         children: [
@@ -550,10 +557,13 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                               final index = booksList.indexOf(book);
                               final String slug = book.bookSlug ?? "";
                               return SizedBox(
+                                height: isMobile ? 80 : 40,
                                 // یہاں ہم چوڑائی (Width) فکس کریں گے تاکہ 3 کالمز بنیں
-                                width:
-                                    (MediaQuery.of(context).size.width / 3) -
-                                    15,
+                                width: isMobile
+                                    ? (MediaQuery.of(context).size.width / 1) -
+                                          15
+                                    : (MediaQuery.of(context).size.width / 3) -
+                                          15,
                                 child: GestureDetector(
                                   onTap: () {
                                     handleBookTap(slug: slug, isUrdu: true);
@@ -578,7 +588,9 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
 
                                               style: TextStyle(
                                                 fontFamily: AppFonts.urdufont,
-                                                fontSize: height * 0.040,
+                                                fontSize: isMobile
+                                                    ? height * 0.035
+                                                    : height * 0.040,
                                                 color: namecolors[index],
                                               ),
                                             ),
