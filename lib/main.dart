@@ -16,7 +16,7 @@ void main() async {
   if (!kIsWeb) {
     AdController().initialize();
   }
-  runApp(DevicePreview(builder: (context) => MyApp(), enabled: true));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -30,9 +30,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      useInheritedMediaQuery: true, // Ye zaroori hai
-      locale: DevicePreview.locale(context), // Ye bhi
-      builder: DevicePreview.appBuilder, // Aur ye bhi
       home: Bottomnav(),
     );
   }
