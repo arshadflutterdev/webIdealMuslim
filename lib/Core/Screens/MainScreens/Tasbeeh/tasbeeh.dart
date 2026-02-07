@@ -213,7 +213,7 @@ class _TasbeehState extends State<Tasbeeh> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-
+    bool isMobile = width < 600;
     return WillPopScope(
       child: Scaffold(
         backgroundColor: kIsWeb ? Color(0xffFFFDF1) : Colors.white,
@@ -426,7 +426,7 @@ class _TasbeehState extends State<Tasbeeh> {
                       color: Color(0xffFFFDF1),
                       child: Row(
                         children: [
-                          Gap(width * 0.12),
+                          Gap(isMobile ? width * 0.02 : width * 0.12),
                           Container(
                             width: 60,
                             height: height * 0.29,
@@ -436,7 +436,9 @@ class _TasbeehState extends State<Tasbeeh> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 ContainerButton(
-                                  height: height * 0.075,
+                                  height: isMobile
+                                      ? height * 0.065
+                                      : height * 0.075,
                                   width: 60,
                                   onPressed: () {
                                     // Use modal bottom sheet again for consistency
@@ -763,7 +765,9 @@ class _TasbeehState extends State<Tasbeeh> {
                                 ),
                                 Gap(15),
                                 ContainerButton(
-                                  height: height * 0.075,
+                                  height: isMobile
+                                      ? height * 0.065
+                                      : height * 0.075,
                                   width: 60,
                                   onPressed: () {
                                     showModalBottomSheet(
@@ -850,9 +854,13 @@ class _TasbeehState extends State<Tasbeeh> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.only(left: width * 0.060),
+                              padding: EdgeInsets.only(
+                                left: isMobile ? width * 0.030 : width * 0.060,
+                              ),
                               child: CustomContainer0(
-                                height: height * 0.29,
+                                height: isMobile
+                                    ? height * 0.15
+                                    : height * 0.29,
                                 widht: double.infinity,
                                 fillcolour: Color(0xff59AC77),
                                 child: Padding(
@@ -867,9 +875,9 @@ class _TasbeehState extends State<Tasbeeh> {
                                           children: [
                                             Text(
                                               (currentIndex + 1).toString(),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 18,
+                                                fontSize: isMobile ? 12 : 18,
                                               ),
                                             ),
                                             const Text(
@@ -881,9 +889,9 @@ class _TasbeehState extends State<Tasbeeh> {
                                             ),
                                             Text(
                                               azkaar.length.toString(),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 18,
+                                                fontSize: isMobile ? 12 : 18,
                                               ),
                                             ),
                                           ],
@@ -893,7 +901,9 @@ class _TasbeehState extends State<Tasbeeh> {
                                           child: Text(
                                             azkaar[currentIndex],
                                             style: TextStyle(
-                                              fontSize: fontsize,
+                                              fontSize: isMobile
+                                                  ? 15
+                                                  : fontsize,
                                               color: Colors.white,
                                             ),
                                             textAlign: TextAlign.center,
@@ -935,7 +945,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                         Text(
                                           azkarmean[currentIndex],
                                           style: TextStyle(
-                                            fontSize: fontsize,
+                                            fontSize: isMobile ? 14 : fontsize,
                                             color: Colors.white,
                                           ),
                                           textAlign: TextAlign.center,
@@ -951,7 +961,7 @@ class _TasbeehState extends State<Tasbeeh> {
                           Gap(6),
                           Container(
                             // height: 100,
-                            width: width * 0.25,
+                            width: isMobile ? width * 0.18 : width * 0.25,
                             // color: Colors.blue,
                             color: Color(0xffFFFDF1),
                             child: Column(
@@ -967,13 +977,13 @@ class _TasbeehState extends State<Tasbeeh> {
                                       style: Apptextstyle.title.copyWith(
                                         color: Colors.black54,
                                         fontWeight: FontWeight.w300,
-                                        fontSize: 58,
+                                        fontSize: isMobile ? 20 : 58,
                                       ),
                                     ),
-                                    const Text(
+                                    Text(
                                       "/",
                                       style: TextStyle(
-                                        fontSize: 40,
+                                        fontSize: isMobile ? 30 : 40,
                                         color: Colors.black38,
                                       ),
                                     ),
@@ -982,7 +992,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                       style: Apptextstyle.title.copyWith(
                                         color: Colors.black54,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 40,
+                                        fontSize: isMobile ? 14 : 40,
                                       ),
                                     ),
                                   ],
