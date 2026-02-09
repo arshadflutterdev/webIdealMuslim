@@ -199,7 +199,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
             "Al-Qur’an",
             style: kIsWeb
                 ? TextStyle(
-                    fontSize: isMobile ? height * 0.040 : height * 0.080,
+                    fontSize: isMobile ? height * 0.035 : height * 0.070,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xFF2F3E34),
                   )

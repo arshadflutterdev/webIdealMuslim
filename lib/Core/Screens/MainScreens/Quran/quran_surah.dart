@@ -402,6 +402,7 @@ class _QuranSurahState extends State<QuranSurah> {
   Widget build(BuildContext context) {
     double widht = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    final isMobile = widht < 600;
     // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
@@ -431,7 +432,7 @@ class _QuranSurahState extends State<QuranSurah> {
             widget.surahName,
             style: Apptextstyle.title.copyWith(
               color: Colors.white,
-              fontSize: widht * 0.055,
+              fontSize: isMobile ? widht * 0.030 : widht * 0.050,
             ),
           ),
         ),
