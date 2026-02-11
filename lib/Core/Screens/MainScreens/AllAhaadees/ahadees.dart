@@ -10,6 +10,7 @@ import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahih_mu
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SunanAnNasai/ShowDetails/sunan_chapters.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Show_details/chapterdetails.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/ShowDetails/majah_chapter_details.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/search_ahadees.dart';
 import 'package:muslim/Core/Screens/books_download.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -311,7 +312,14 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () {}),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SearchAhadees()),
+            );
+          },
+        ),
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: const Color(0xFFFCF8F6),
