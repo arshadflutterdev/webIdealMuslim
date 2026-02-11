@@ -311,6 +311,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {}),
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: const Color(0xFFFCF8F6),
