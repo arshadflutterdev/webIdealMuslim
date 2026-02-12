@@ -384,20 +384,62 @@ class _SearchAhadeesState extends State<SearchAhadees> {
   }
 
   // WEB: Load from APIs
+  // Web ke liye loading logic ko is tarah update karein
   Future<void> loadFromWeb() async {
+    // Books ki list jinhein load karna hai
+    List<String> books = [
+      "sahih-bukhari",
+      "sahih-muslim",
+      "al-tirmidhi",
+      "abu-dawood",
+    ];
+    String apiKey =
+        "%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+
     try {
-      // Parallel loading for speed on web
-      final responses = await Future.wait(
-        webUrls.map((url) => http.get(Uri.parse(url))),
-      );
-      for (var response in responses) {
-        if (response.statusCode == 200) {
-          parseAndAddData(response.body);
+      for (String book in books) {
+        // 1. Pehle us book ke saare chapters mangwao
+        final chapterResponse = await http.get(
+          Uri.parse("https://hadithapi.com/api/$book/chapters?apiKey=$apiKey"),
+        );
+
+        if (chapterResponse.statusCode == 200) {
+          final decodedChapters = jsonDecode(chapterResponse.body);
+          final List chaptersList = decodedChapters["chapters"] ?? [];
+
+          // 2. Har chapter ke andar ki hadiths uthao
+          // Note: Performance ke liye hum parallel calls kar sakte hain
+          await Future.wait(
+            chaptersList.map((chapter) async {
+              final chapNo = chapter["chapterNumber"];
+              final hadithRes = await http.get(
+                Uri.parse(
+                  "https://hadithapi.com/api/hadiths/?book=$book&chapter=$chapNo&apiKey=$apiKey",
+                ),
+              );
+
+              if (hadithRes.statusCode == 200) {
+                final hDecoded = jsonDecode(hadithRes.body);
+                final List fetchedData = hDecoded["hadiths"]["data"] ?? [];
+
+                // Saath saath list mein add karte jao
+                synchronizedAdd(fetchedData);
+              }
+            }),
+          );
         }
       }
+      print("Web Data Fully Loaded: ${allHadithsList.length}");
     } catch (e) {
-      print("Web Loading Error: $e");
+      print("Web Error: $e");
     }
+  }
+
+  // Data add karne ka safe tareeqa taake memory crash na ho
+  void synchronizedAdd(List fetchedData) {
+    setState(() {
+      allHadithsList.addAll(fetchedData.map((h) => Data.fromJson(h)).toList());
+    });
   }
 
   // Helper to parse JSON (Works for both)
