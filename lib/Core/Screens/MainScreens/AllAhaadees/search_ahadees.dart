@@ -139,69 +139,157 @@ class _SearchAhadeesState extends State<SearchAhadees> {
                     itemCount: searchResults.length,
                     itemBuilder: (context, index) {
                       final hadith = searchResults[index];
+
+                      // Arabic Title ko thora short kar dete hain taake screen se bahar na jaye
+                      String arabicTitle =
+                          (hadith.hadithArabic ?? "").length > 50
+                          ? "${hadith.hadithArabic!.substring(0, 50)}..."
+                          : (hadith.hadithArabic ?? "");
+
                       return Card(
                         margin: const EdgeInsets.symmetric(
                           horizontal: 12,
-                          vertical: 6,
+                          vertical: 8,
                         ),
+                        elevation: 4,
+                        shadowColor: Colors.black26,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(15),
                         ),
                         child: ExpansionTile(
+                          shape:
+                              const Border(), // Expansion lines khatam karne ke liye
                           leading: CircleAvatar(
-                            backgroundColor: Colors.green.shade50,
+                            backgroundColor: Colors.green,
+                            radius: 18,
                             child: Text(
                               hadith.hadithNumber.toString(),
                               style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.green,
+                                fontSize: 10,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
+
+                          // --- TITLE: Arabic Text ---
                           title: Text(
-                            "Hadith Number: ${hadith.hadithNumber}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            arabicTitle,
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontFamily:
+                                  'Arabic', // Agar aapne font add kiya hai
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          subtitle: const Text(
-                            "Click karke detail dekhein",
-                            style: TextStyle(fontSize: 11),
+
+                          // --- SUBTITLE: Urdu aur English Mix ---
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              const Gap(4),
+                              // Urdu Preview
+                              Text(
+                                hadith.hadithUrdu ??
+                                    "Urdu translation not available",
+                                textAlign: TextAlign.right,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              // English Preview
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  hadith.hadithEnglish ?? "",
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.grey,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
+
                           childrenPadding: const EdgeInsets.all(15),
-                          expandedAlignment: Alignment.topRight,
                           children: [
-                            // Arabic
+                            const Divider(),
+                            // Poora Arabic
                             Text(
                               hadith.hadithArabic ?? "",
                               textAlign: TextAlign.right,
                               style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 22,
                                 height: 1.6,
                                 color: Colors.black,
-                                fontFamily: 'Arabic',
                               ),
                             ),
-                            const Divider(),
-                            // Urdu (Agar aapke model mein field ka naam 'hadithUrdu' hai)
-                            Text(
-                              hadith.hadithUrdu ??
-                                  "Urdu translation not available",
-                              textAlign: TextAlign.right,
-                              style: const TextStyle(
-                                fontSize: 17,
-                                color: Colors.blueGrey,
-                                fontWeight: FontWeight.w500,
+                            const Gap(15),
+
+                            // Urdu Full Section
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade50,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                hadith.hadithUrdu ?? "",
+                                textAlign: TextAlign.right,
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  height: 1.5,
+                                  color: Colors.black87,
+                                ),
                               ),
                             ),
-                            const Gap(10),
-                            // English
+
+                            const Gap(15),
+
+                            // English Full Section
                             Text(
                               hadith.hadithEnglish ?? "",
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                 fontSize: 15,
-                                color: Colors.black87,
+                                color: Colors.black54,
                               ),
+                            ),
+
+                            const Gap(10),
+                            // Actions: Copy/Share (Optional)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.copy,
+                                    size: 20,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.share,
+                                    size: 20,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
