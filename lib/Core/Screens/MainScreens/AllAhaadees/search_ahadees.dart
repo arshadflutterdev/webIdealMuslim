@@ -96,6 +96,13 @@ class _SearchAhadeesState extends State<SearchAhadees> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5), // Light grey background
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios_new),
+        ),
         title: const Text(
           "Search All Hadiths",
           style: TextStyle(color: Colors.black),
@@ -111,6 +118,7 @@ class _SearchAhadeesState extends State<SearchAhadees> {
             color: Colors.white,
             padding: const EdgeInsets.all(15.0),
             child: TextField(
+              cursorColor: Colors.black,
               controller: _searchController,
               onChanged: (value) => _runFilter(value),
               keyboardType: TextInputType.number,
