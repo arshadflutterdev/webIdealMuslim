@@ -141,8 +141,8 @@ class _SearchAhadeesState extends State<SearchAhadees> {
                 ? const Center(
                     child: CircularProgressIndicator(color: Colors.green),
                   )
-                : searchResults.isEmpty && _searchController.text.isNotEmpty
-                ? const Center(child: Text("Koi Hadith nahi mili!"))
+                : _searchController.text.isEmpty
+                ? const Center(child: Text("Not hadith Founds"))
                 : ListView.builder(
                     itemCount: searchResults.length,
                     itemBuilder: (context, index) {
@@ -155,6 +155,7 @@ class _SearchAhadeesState extends State<SearchAhadees> {
                           : (hadith.hadithArabic ?? "");
 
                       return Card(
+                        color: Colors.white,
                         margin: const EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 8,
