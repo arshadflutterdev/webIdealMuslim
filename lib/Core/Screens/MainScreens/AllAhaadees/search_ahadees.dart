@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 class SearchAhadees extends StatefulWidget {
   const SearchAhadees({super.key});
@@ -13,11 +12,10 @@ class _SearchAhadeesState extends State<SearchAhadees> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text("Search Haddes", style: TextStyle(fontSize: 20)),
-          Text("حدیث تلاش کریں", style: TextStyle(fontSize: 20)),
 
           Row(
             children: [
@@ -47,6 +45,7 @@ class _SearchAhadeesState extends State<SearchAhadees> {
                   ),
                 ),
               ),
+              IconButton(onPressed: () {}, icon: Icon(Icons.search)),
             ],
           ),
         ],
