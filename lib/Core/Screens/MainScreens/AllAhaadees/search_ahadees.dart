@@ -26,6 +26,7 @@ class _SearchAhadeesState extends State<SearchAhadees> {
                   padding: const EdgeInsets.all(12.0),
                   child: TextField(
                     decoration: InputDecoration(
+                      labelText: "Search with number",
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.green),
                         borderRadius: BorderRadius.circular(10),
