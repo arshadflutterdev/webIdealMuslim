@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:muslim/Core/Const/app_images.dart';
 import 'package:screenshot/screenshot.dart'; // Image banane ke liye
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -22,6 +23,12 @@ class EnglishShareScreen extends StatefulWidget {
 }
 
 class _EnglishShareScreenState extends State<EnglishShareScreen> {
+  List<String> bgimages = [
+    AppImages.rmbg1,
+    AppImages.rmbg2,
+    AppImages.rmbg3,
+    AppImages.rmbg4,
+  ];
   // 1. Controller jo widget ki photo kheechega
   ScreenshotController screenshotController = ScreenshotController();
 

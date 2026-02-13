@@ -35,4 +35,6 @@ class AppImages {
   static const String rmbg2 = "assets/images/rmbg2.png";
   static const String rmbg3 = "assets/images/rmbg3.png";
   static const String rmbg4 = "assets/images/rmbg4.png";
+  static const String rmbg5 =
+      "assets/images/5861f664-b411-4206-992f-50c8378bb4ed.jpg";
 }
