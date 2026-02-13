@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'dart:convert';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWasm, kIsWeb;
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_chapter_details.dart';
@@ -10,6 +10,7 @@ import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahih_mu
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SunanAnNasai/ShowDetails/sunan_chapters.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Show_details/chapterdetails.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/ShowDetails/majah_chapter_details.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/onmobile_search.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/search_ahadees.dart';
 import 'package:muslim/Core/Screens/books_download.dart';
 import 'package:flutter/material.dart';
@@ -316,10 +317,19 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SearchAhadeesWeb()),
-                );
+                kIsWeb
+                    ? Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchAhadeesWeb(),
+                        ),
+                      )
+                    : Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchAhadees(),
+                        ),
+                      );
               },
               icon: Icon(Icons.search_rounded),
             ),
