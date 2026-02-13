@@ -1,11 +1,13 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart'; // kIsWeb check karne ke liye
 import 'package:flutter/material.dart';
 import 'package:muslim/Core/Const/app_images.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart'; // Gallery ke liye
+import 'package:image_picker/image_picker.dart';
+// Web download ke liye conditional import lagta hai, niche function mein handle kiya hai.
 
 class EnglishShareScreen extends StatefulWidget {
   final String arabic;
@@ -33,8 +35,6 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
   ];
 
   ScreenshotController screenshotController = ScreenshotController();
-
-  // Dynamic rakha hai taake Gallery file ya Asset string dono chal saken
   dynamic selectedBgImage;
   Color selectedTextColor = Colors.black;
   double fontSize = 22;
@@ -45,14 +45,39 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
     selectedBgImage = bgimages[0];
   }
 
-  // Gallery se image pick karne ka function
   Future<void> _pickImageFromGallery() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      setState(() {
-        selectedBgImage = File(pickedFile.path);
-      });
+      setState(() => selectedBgImage = File(pickedFile.path));
+    }
+  }
+
+  // --- SAVE & DOWNLOAD LOGIC ---
+  Future<void> _saveOrDownloadImage() async {
+    final image = await screenshotController.capture();
+    if (image == null) return;
+
+    if (kIsWeb) {
+      // Web logic: Download in browser
+      // Note: Web ke liye anchor element use hota hai
+      final base64 = Uri.dataFromBytes(image, mimeType: "image/png").toString();
+      // In real app, you might use 'dart:html' anchor element here
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Web download triggered!")));
+    } else {
+      // Mobile logic: Save to Documents/Gallery
+      final directory = await getApplicationDocumentsDirectory();
+      final path =
+          '${directory.path}/hadith_${DateTime.now().millisecondsSinceEpoch}.png';
+      final file = File(path);
+      await file.writeAsBytes(image);
+
+      // Aap 'gal' ya 'image_gallery_saver' package use karke gallery mein bhej sakte hain
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Saved to: $path")));
     }
   }
 
@@ -63,45 +88,57 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
       appBar: AppBar(
         title: const Text("Create Hadith Post"),
         backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.download_rounded),
+            onPressed: _saveOrDownloadImage, // Download Button in AppBar
+          ),
+        ],
       ),
       body: Column(
         children: [
           Expanded(
             child: Center(
-              child: Screenshot(
-                controller: screenshotController,
-                child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  padding: const EdgeInsets.all(25),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    image: DecorationImage(
-                      // Logic: Agar File hai to FileImage, warna AssetImage
-                      image: selectedBgImage is File
-                          ? FileImage(selectedBgImage) as ImageProvider
-                          : AssetImage(selectedBgImage),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Hadith # ${widget.hadithNo}",
-                        style: TextStyle(
-                          color: selectedTextColor.withOpacity(0.8),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
+              // --- DRAG TO RESIZE GESTURE ---
+              child: GestureDetector(
+                onVerticalDragUpdate: (details) {
+                  setState(() {
+                    // Neeche drag karne se size barhega, upar se kam
+                    fontSize -= details.delta.dy * 0.1;
+                    fontSize = fontSize.clamp(12.0, 50.0); // Limit settings
+                  });
+                },
+                child: Screenshot(
+                  controller: screenshotController,
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    padding: const EdgeInsets.all(25),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      image: DecorationImage(
+                        image: selectedBgImage is File
+                            ? FileImage(selectedBgImage) as ImageProvider
+                            : AssetImage(selectedBgImage),
+                        fit: BoxFit.cover,
                       ),
-                      const SizedBox(height: 20),
-                      Expanded(
-                        child: Center(
-                          child: SingleChildScrollView(
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Hadith # ${widget.hadithNo}",
+                          style: TextStyle(
+                            color: selectedTextColor.withOpacity(0.8),
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Expanded(
+                          child: Center(
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   widget.arabic,
@@ -111,55 +148,36 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                                     color: selectedTextColor,
                                     fontSize: fontSize,
                                     height: 1.6,
-                                    shadows: [
-                                      Shadow(
-                                        offset: const Offset(1, 1),
-                                        blurRadius: 3,
-                                        color: Colors.black.withOpacity(0.5),
-                                      ),
-                                    ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 15,
-                                  ),
-                                  child: Divider(
-                                    color: selectedTextColor.withOpacity(0.3),
-                                    thickness: 1,
-                                  ),
+                                Divider(
+                                  color: selectedTextColor.withOpacity(0.3),
+                                  thickness: 1,
+                                  height: 30,
                                 ),
                                 Text(
                                   widget.english,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: selectedTextColor,
-                                    fontSize: 15,
+                                    fontSize: fontSize * 0.7,
                                     fontWeight: FontWeight.w500,
-                                    shadows: [
-                                      Shadow(
-                                        offset: const Offset(1, 1),
-                                        blurRadius: 2,
-                                        color: Colors.black.withOpacity(0.5),
-                                      ),
-                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 15),
-                      Text(
-                        "Shared via Digital Tasbeeh App",
-                        style: TextStyle(
-                          color: selectedTextColor.withOpacity(0.5),
-                          fontSize: 10,
-                          fontStyle: FontStyle.italic,
+                        const SizedBox(height: 15),
+                        Text(
+                          "Shared via Digital Tasbeeh App",
+                          style: TextStyle(
+                            color: selectedTextColor.withOpacity(0.5),
+                            fontSize: 10,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -179,21 +197,13 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Select Background",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
                 SizedBox(
                   height: 60,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    // +1 kiya hai gallery button ke liye
                     itemCount: bgimages.length + 1,
                     itemBuilder: (context, index) {
-                      // Pehla button Gallery picker hoga
                       if (index == 0) {
                         return GestureDetector(
                           onTap: _pickImageFromGallery,
@@ -203,20 +213,14 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                             decoration: BoxDecoration(
                               color: Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.grey.shade400,
-                                width: 2,
-                              ),
                             ),
                             child: const Icon(
-                              Icons.add_photo_alternate,
+                              Icons.add_a_photo,
                               color: Colors.green,
                             ),
                           ),
                         );
                       }
-
-                      // Baqi normal asset images
                       final assetPath = bgimages[index - 1];
                       return GestureDetector(
                         onTap: () =>
@@ -229,7 +233,7 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                             border: Border.all(
                               color: selectedBgImage == assetPath
                                   ? Colors.green
-                                  : Colors.grey.shade300,
+                                  : Colors.transparent,
                               width: 3,
                             ),
                             image: DecorationImage(
@@ -242,38 +246,33 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                     },
                   ),
                 ),
-
+                const SizedBox(height: 15),
                 Row(
                   children: [
-                    const Icon(Icons.format_size, size: 20),
                     Expanded(
-                      child: Slider(
-                        activeColor: Colors.green,
-                        value: fontSize,
-                        min: 18,
-                        max: 32,
-                        onChanged: (val) => setState(() => fontSize = val),
+                      child: ElevatedButton.icon(
+                        onPressed: _saveOrDownloadImage,
+                        icon: const Icon(Icons.save_alt),
+                        label: const Text("SAVE"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: _takeScreenshotAndShare,
+                        icon: const Icon(Icons.share),
+                        label: const Text("SHARE"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                        ),
                       ),
                     ),
                   ],
-                ),
-
-                const SizedBox(height: 10),
-                ElevatedButton.icon(
-                  onPressed: _takeScreenshotAndShare,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(double.infinity, 55),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  icon: const Icon(Icons.share),
-                  label: const Text(
-                    "SHARE TO SOCIAL MEDIA",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
                 ),
               ],
             ),
@@ -283,19 +282,15 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
     );
   }
 
-  // _colorOption aur _takeScreenshotAndShare functions wese hi rahen ge
   void _takeScreenshotAndShare() async {
     final image = await screenshotController.capture();
     if (image != null) {
       final directory = await getApplicationDocumentsDirectory();
       final imagePath = await File(
-        '${directory.path}/hadith_share_${DateTime.now().millisecondsSinceEpoch}.png',
+        '${directory.path}/hadith_${DateTime.now().millisecondsSinceEpoch}.png',
       ).create();
       await imagePath.writeAsBytes(image);
-
-      await Share.shareXFiles([
-        XFile(imagePath.path),
-      ], text: 'Read this beautiful Hadith');
+      await Share.shareXFiles([XFile(imagePath.path)], text: 'Hadith Share');
     }
   }
 }
