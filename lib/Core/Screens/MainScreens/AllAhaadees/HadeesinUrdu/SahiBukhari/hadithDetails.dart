@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadith_details_model.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/english_share_screen.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -371,24 +372,36 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                       ),
                     ),
                     onPressed: () {
-                      String textToShare;
+                      // 1. Pehle Bottom Sheet ko band karein
+                      Navigator.pop(context);
 
-                      if (selected == 1) {
-                        textToShare = item.hadithArabic ?? "";
-                      } else if (selected == 2) {
-                        textToShare = item.hadithUrdu ?? "";
-                      } else {
-                        textToShare =
-                            "${item.hadithArabic ?? ""}\n\n${item.hadithUrdu ?? ""}";
-                      }
+                      // 2. Data prepare karein jo humne agli screen par bhejna hai
+                      // Hum user ki choice (Arabic, English ya Both) ke mutabiq data bhejenge
+                      String arabicData = (selected == 1 || selected == 3)
+                          ? (item.hadithArabic ?? "")
+                          : "";
+                      String englishData = (selected == 2 || selected == 3)
+                          ? (item.hadithEnglish ?? "")
+                          : "";
 
-                      Share.share(textToShare);
+                      // 3. Design wali screen par move karein
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EnglishShareScreen(
+                            arabic: arabicData,
+                            english: englishData,
+                            hadithNo: item.hadithNumber.toString(),
+                          ),
+                        ),
+                      );
                     },
                     child: const Text(
-                      "Share",
+                      "Design & Share", // Button ka naam change kar diya taake user ko pata chale
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
+
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
