@@ -46,49 +46,51 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                     color: selectedColor,
                     borderRadius: BorderRadius.circular(0), // Social media look
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Hadith # ${widget.hadithNo}",
-                        style: const TextStyle(
-                          color: Colors.white60,
-                          fontSize: 12,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Hadith # ${widget.hadithNo}",
+                          style: const TextStyle(
+                            color: Colors.white60,
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 15),
-                      // ARABIC TEXT
-                      Text(
-                        widget.arabic,
-                        textAlign: TextAlign.right,
-                        style: GoogleFonts.amiri(
-                          // Khoobsurat Arabic Font
-                          color: Colors.white,
-                          fontSize: fontSize,
-                          height: 1.8,
+                        const SizedBox(height: 15),
+                        // ARABIC TEXT
+                        Text(
+                          widget.arabic,
+                          textAlign: TextAlign.right,
+                          style: GoogleFonts.amiri(
+                            // Khoobsurat Arabic Font
+                            color: Colors.white,
+                            fontSize: fontSize,
+                            height: 1.8,
+                          ),
                         ),
-                      ),
-                      const Divider(color: Colors.white24, height: 30),
-                      // ENGLISH/URDU TEXT
-                      Text(
-                        widget.english,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
+                        const Divider(color: Colors.white24, height: 30),
+                        // ENGLISH/URDU TEXT
+                        Text(
+                          widget.english,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      // APP BRANDING
-                      const Text(
-                        "Shared via Digital Tasbeeh App",
-                        style: TextStyle(
-                          color: Colors.white38,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(height: 20),
+                        // APP BRANDING
+                        const Text(
+                          "Shared via Digital Tasbeeh App",
+                          style: TextStyle(
+                            color: Colors.white38,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
