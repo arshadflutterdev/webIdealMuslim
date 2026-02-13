@@ -318,7 +318,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SearchAhadees()),
+                  MaterialPageRoute(builder: (context) => SearchAhadeesWeb()),
                 );
               },
               icon: Icon(Icons.search_rounded),
