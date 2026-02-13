@@ -5,6 +5,7 @@ import 'package:screenshot/screenshot.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart'; // Gallery ke liye
 
 class EnglishShareScreen extends StatefulWidget {
   final String arabic;
@@ -23,7 +24,6 @@ class EnglishShareScreen extends StatefulWidget {
 }
 
 class _EnglishShareScreenState extends State<EnglishShareScreen> {
-  // Images ki list
   final List<String> bgimages = [
     AppImages.rmbg1,
     AppImages.rmbg2,
@@ -34,15 +34,26 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
 
   ScreenshotController screenshotController = ScreenshotController();
 
-  // Customization States
-  late String selectedBgImage;
-  Color selectedTextColor = Colors.black; // Ab colors text ke liye hain
+  // Dynamic rakha hai taake Gallery file ya Asset string dono chal saken
+  dynamic selectedBgImage;
+  Color selectedTextColor = Colors.black;
   double fontSize = 22;
 
   @override
   void initState() {
     super.initState();
-    selectedBgImage = bgimages[0]; // Pehli image default hogi
+    selectedBgImage = bgimages[0];
+  }
+
+  // Gallery se image pick karne ka function
+  Future<void> _pickImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        selectedBgImage = File(pickedFile.path);
+      });
+    }
   }
 
   @override
@@ -57,19 +68,21 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
       ),
       body: Column(
         children: [
-          // --- POST PREVIEW AREA ---
           Expanded(
             child: Center(
               child: Screenshot(
                 controller: screenshotController,
                 child: Container(
                   width: double.infinity,
-                  height: double.infinity, // Perfect Square for Social Media
+                  height: double.infinity,
                   padding: const EdgeInsets.all(25),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     image: DecorationImage(
-                      image: AssetImage(selectedBgImage),
+                      // Logic: Agar File hai to FileImage, warna AssetImage
+                      image: selectedBgImage is File
+                          ? FileImage(selectedBgImage) as ImageProvider
+                          : AssetImage(selectedBgImage),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -85,7 +98,6 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // ARABIC TEXT
                       Expanded(
                         child: Center(
                           child: SingleChildScrollView(
@@ -117,7 +129,6 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                                     thickness: 1,
                                   ),
                                 ),
-                                // ENGLISH TEXT
                                 Text(
                                   widget.english,
                                   textAlign: TextAlign.center,
@@ -170,7 +181,6 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Background Image Selector
                 const Text(
                   "Select Background",
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -180,24 +190,50 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                   height: 60,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: bgimages.length,
+                    // +1 kiya hai gallery button ke liye
+                    itemCount: bgimages.length + 1,
                     itemBuilder: (context, index) {
+                      // Pehla button Gallery picker hoga
+                      if (index == 0) {
+                        return GestureDetector(
+                          onTap: _pickImageFromGallery,
+                          child: Container(
+                            width: 60,
+                            margin: const EdgeInsets.only(right: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Colors.grey.shade400,
+                                width: 2,
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.add_photo_alternate,
+                              color: Colors.green,
+                            ),
+                          ),
+                        );
+                      }
+
+                      // Baqi normal asset images
+                      final assetPath = bgimages[index - 1];
                       return GestureDetector(
                         onTap: () =>
-                            setState(() => selectedBgImage = bgimages[index]),
+                            setState(() => selectedBgImage = assetPath),
                         child: Container(
                           width: 60,
                           margin: const EdgeInsets.only(right: 12),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: selectedBgImage == bgimages[index]
+                              color: selectedBgImage == assetPath
                                   ? Colors.green
                                   : Colors.grey.shade300,
                               width: 3,
                             ),
                             image: DecorationImage(
-                              image: AssetImage(bgimages[index]),
+                              image: AssetImage(assetPath),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -207,9 +243,6 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                   ),
                 ),
 
-                // Text Color Selector
-
-                // Font Size Slider
                 Row(
                   children: [
                     const Icon(Icons.format_size, size: 20),
@@ -250,27 +283,7 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
     );
   }
 
-  Widget _colorOption(Color color) {
-    return GestureDetector(
-      onTap: () => setState(() => selectedTextColor = color),
-      child: Container(
-        width: 38,
-        height: 38,
-        margin: const EdgeInsets.symmetric(horizontal: 6),
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: selectedTextColor == color
-                ? Colors.green
-                : Colors.grey.shade300,
-            width: 2,
-          ),
-        ),
-      ),
-    );
-  }
-
+  // _colorOption aur _takeScreenshotAndShare functions wese hi rahen ge
   void _takeScreenshotAndShare() async {
     final image = await screenshotController.capture();
     if (image != null) {
