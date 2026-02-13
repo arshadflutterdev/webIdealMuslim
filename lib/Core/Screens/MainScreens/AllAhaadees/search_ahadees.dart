@@ -188,6 +188,7 @@ class _SearchAhadeesWebState extends State<SearchAhadeesWeb> {
 
   Widget _buildHadithCard(Data hadith) {
     return Card(
+      color: Colors.white,
       margin: const EdgeInsets.only(bottom: 15),
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
