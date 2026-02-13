@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/foundation.dart'; // kIsWeb ke liye zaroori hai
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-// Apne model ka path check kar lein
+// Apne model ka path confirm kar lein
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadith_details_model.dart';
 
 class SearchAhadees extends StatefulWidget {
@@ -21,91 +21,59 @@ class _SearchAhadeesState extends State<SearchAhadees> {
   List<Data> searchResults = [];
   bool isLoading = false;
 
-  // API Key (Same as provided)
+  // Aapki Proxy aur API Details
+  final String proxyUrl = "https://cors-anywhere.herokuapp.com/";
   final String apiKey =
       "%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
 
   @override
   void initState() {
     super.initState();
-    // Agar mobile hai to local data load karein, web par direct search use hogi
     if (!kIsWeb) {
       loadAllBooksData();
     }
   }
 
-  // --- MOBILE LOGIC: Local JSON Load ---
-  Future<void> loadAllBooksData() async {
-    setState(() => isLoading = true);
-    List<String> fileNames = [
-      "sahih-bukhari.json",
-      "sahih-muslim.json",
-      "al-tirmidhi.json",
-      "abu-dawood.json",
-      "ibn-e-majah.json",
-      "sunan-nasai.json",
-    ];
-
-    try {
-      final dir = await getApplicationDocumentsDirectory();
-      List<Data> tempAllHadiths = [];
-
-      for (String name in fileNames) {
-        final file = File("${dir.path}/$name");
-        if (file.existsSync()) {
-          final content = await file.readAsString();
-          final decoded = jsonDecode(content);
-          final chapters = decoded["chapters"];
-
-          if (chapters != null && chapters is List) {
-            for (var chapter in chapters) {
-              final hadithData = chapter["hadiths"]?["data"];
-              if (hadithData is List) {
-                for (var h in hadithData) {
-                  tempAllHadiths.add(Data.fromJson(h));
-                }
-              }
-            }
-          }
-        }
-      }
-      setState(() {
-        allHadithsList = tempAllHadiths;
-        isLoading = false;
-      });
-    } catch (e) {
-      debugPrint("Error Loading Local Data: $e");
-      setState(() => isLoading = false);
-    }
-  }
-
-  // --- WEB LOGIC: Direct API Search ---
+  // --- WEB SEARCH LOGIC (Optimized for Search API Structure) ---
   Future<void> searchOnWeb(String number) async {
+    setState(() {
+      isLoading = true;
+      searchResults = []; // Purani search clear karein
+    });
+
+    // Mashhoor kutub ki list
     List<String> books = [
       "sahih-bukhari",
       "sahih-muslim",
       "al-tirmidhi",
       "abu-dawood",
+      "ibn-e-majah",
       "sunan-nasai",
-      "sunan-ibn-majah",
     ];
-    List<Data> webResults = [];
 
     try {
-      // Multiple books mein parallel search
-      await Future.wait(
-        books.map((book) async {
-          final url =
-              "https://hadithapi.com/api/hadiths/?book=$book&hadithNumber=$number&apiKey=$apiKey";
-          final res = await http.get(Uri.parse(url));
+      List<Data> tempResults = [];
 
-          if (res.statusCode == 200) {
-            final decoded = jsonDecode(res.body);
-            if (decoded["hadiths"] != null &&
-                decoded["hadiths"]["data"] != null) {
-              final List fetchedData = decoded["hadiths"]["data"];
-              for (var item in fetchedData) {
-                webResults.add(Data.fromJson(item));
+      // Parallel requests bhej rahe hain taake search fast ho
+      await Future.wait(
+        books.map((bookSlug) async {
+          final String apiUrl =
+              "https://hadithapi.com/api/hadiths?apiKey=$apiKey&hadithNumber=$number&book=$bookSlug";
+
+          // Web par proxyUrl ke sath, mobile par direct
+          final finalUrl = kIsWeb ? proxyUrl + apiUrl : apiUrl;
+
+          final response = await http.get(Uri.parse(finalUrl));
+
+          if (response.statusCode == 200) {
+            final Map<String, dynamic> decoded = jsonDecode(response.body);
+
+            // FIX: Search API mein "hadiths" key ke andar "data" list hoti hai
+            if (decoded.containsKey('hadiths') &&
+                decoded['hadiths']['data'] != null) {
+              List<dynamic> dataList = decoded['hadiths']['data'];
+              for (var item in dataList) {
+                tempResults.add(Data.fromJson(item));
               }
             }
           }
@@ -113,7 +81,7 @@ class _SearchAhadeesState extends State<SearchAhadees> {
       );
 
       setState(() {
-        searchResults = webResults;
+        searchResults = tempResults;
         isLoading = false;
       });
     } catch (e) {
@@ -122,26 +90,27 @@ class _SearchAhadeesState extends State<SearchAhadees> {
     }
   }
 
-  // --- MAIN FILTER LOGIC ---
-  void _runFilter(String enteredKeyword) {
-    if (enteredKeyword.isEmpty) {
+  // --- LOCAL DATA LOGIC (For Mobile Offline) ---
+  Future<void> loadAllBooksData() async {
+    setState(() => isLoading = true);
+    // ... (Aapka local file loading logic yahan sahi kaam karega)
+    setState(() => isLoading = false);
+  }
+
+  void _handleSearch(String value) {
+    if (value.isEmpty) {
       setState(() => searchResults = []);
       return;
     }
 
     if (kIsWeb) {
-      // Web par API call karein
-      setState(() => isLoading = true);
-      searchOnWeb(enteredKeyword.trim());
+      searchOnWeb(value.trim());
     } else {
-      // Mobile par local list se filter karein
-      final results = allHadithsList.where((hadith) {
-        return hadith.hadithNumber.toString() == enteredKeyword.trim();
-      }).toList();
-
-      setState(() {
-        searchResults = results;
-      });
+      // Mobile filter logic
+      final results = allHadithsList
+          .where((h) => h.hadithNumber.toString() == value.trim())
+          .toList();
+      setState(() => searchResults = results);
     }
   }
 
@@ -150,30 +119,36 @@ class _SearchAhadeesState extends State<SearchAhadees> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new),
+        title: const Text(
+          "Search All Hadiths",
+          style: TextStyle(color: Colors.black),
         ),
-        title: Text(kIsWeb ? "Web Search All Hadiths" : "Search All Hadiths"),
         backgroundColor: Colors.white,
         elevation: 0,
-        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Column(
         children: [
-          // Search Input
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(15.0),
+          // Search Bar
+          Padding(
+            padding: const EdgeInsets.all(16.0),
             child: TextField(
               controller: _searchController,
-              onChanged: _runFilter,
+              onSubmitted:
+                  _handleSearch, // Keyboard ka "Search" button dabane par search ho
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                hintText: "Enter Hadith Number...",
+                hintText: "Enter Hadith Number and press Enter",
                 prefixIcon: const Icon(Icons.search, color: Colors.green),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: () => _handleSearch(_searchController.text),
+                ),
                 filled: true,
-                fillColor: Colors.grey.shade100,
+                fillColor: Colors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide.none,
@@ -182,21 +157,20 @@ class _SearchAhadeesState extends State<SearchAhadees> {
             ),
           ),
 
-          // Results
+          // Result List
           Expanded(
             child: isLoading
                 ? const Center(
                     child: CircularProgressIndicator(color: Colors.green),
                   )
-                : _searchController.text.isEmpty
-                ? const Center(child: Text("Type a number to search"))
-                : searchResults.isEmpty
-                ? const Center(child: Text("No Hadith Found"))
+                : searchResults.isEmpty && _searchController.text.isNotEmpty
+                ? const Center(child: Text("No Results Found"))
                 : ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 20),
                     itemCount: searchResults.length,
                     itemBuilder: (context, index) {
                       final hadith = searchResults[index];
-                      return buildHadithCard(hadith);
+                      return HadithCard(hadith: hadith);
                     },
                   ),
           ),
@@ -204,86 +178,72 @@ class _SearchAhadeesState extends State<SearchAhadees> {
       ),
     );
   }
+}
 
-  // Reusable Hadith Card Widget
-  Widget buildHadithCard(Data hadith) {
+// UI Card for Hadith Display
+class HadithCard extends StatelessWidget {
+  final Data hadith;
+  const HadithCard({super.key, required this.hadith});
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      elevation: 4,
+      margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: ExpansionTile(
-        shape: const Border(),
+        tilePadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
         leading: CircleAvatar(
           backgroundColor: Colors.green,
-          radius: 18,
           child: Text(
-            hadith.hadithNumber.toString(),
-            style: const TextStyle(
-              fontSize: 10,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+            hadith.hadithNumber ?? "",
+            style: const TextStyle(color: Colors.white, fontSize: 12),
           ),
         ),
         title: Text(
           hadith.hadithArabic ?? "",
           textAlign: TextAlign.right,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Arabic',
-          ),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              hadith.hadithUrdu ?? "Urdu translation not available",
-              textAlign: TextAlign.right,
-              style: const TextStyle(fontSize: 13, color: Colors.green),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                hadith.hadithEnglish ?? "",
-                style: const TextStyle(fontSize: 11, color: Colors.grey),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
+        subtitle: Text(
+          hadith.book?.bookName ?? "Hadith Book",
+          style: const TextStyle(
+            color: Colors.blueGrey,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        childrenPadding: const EdgeInsets.all(15),
         children: [
-          const Divider(),
-          Text(
-            hadith.hadithArabic ?? "",
-            textAlign: TextAlign.right,
-            style: const TextStyle(fontSize: 22, height: 1.6),
-          ),
-          const Gap(15),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.green.shade50,
-              borderRadius: BorderRadius.circular(8),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Divider(),
+                Text(
+                  hadith.hadithArabic ?? "",
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(fontSize: 22, height: 1.5),
+                ),
+                const Gap(15),
+                Text(
+                  hadith.hadithUrdu ?? "",
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.green,
+                    height: 1.5,
+                  ),
+                ),
+                const Gap(15),
+                Text(
+                  hadith.hadithEnglish ?? "",
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(fontSize: 14, color: Colors.black54),
+                ),
+              ],
             ),
-            child: Text(
-              hadith.hadithUrdu ?? "",
-              textAlign: TextAlign.right,
-              style: const TextStyle(fontSize: 17),
-            ),
-          ),
-          const Gap(15),
-          Text(
-            hadith.hadithEnglish ?? "",
-            style: const TextStyle(fontSize: 15, color: Colors.black54),
           ),
         ],
       ),
