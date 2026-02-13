@@ -29,4 +29,10 @@ class AppImages {
   static const String muslim = "assets/Ahaadees/Sahii Muslam.jpg";
   static const String abudawood = "assets/Ahaadees/Sunan Abu Dawood.jpg";
   static const String ibnmajah = "assets/Ahaadees/sunan_ebne_mmajah.jpg";
+
+  //rmbg shared
+  static const String rmbg1 = "assets/images/rmbg1.png";
+  static const String rmbg2 = "assets/images/rmbg2.png";
+  static const String rmbg3 = "assets/images/rmbg3.png";
+  static const String rmbg4 = "assets/images/rmbg4.png";
 }
