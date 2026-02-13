@@ -1,7 +1,11 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart'; // kIsWeb ke liye
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+// Apne model ka path check kar lein
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadith_details_model.dart';
 
 class SearchAhadees extends StatefulWidget {
@@ -13,153 +17,240 @@ class SearchAhadees extends StatefulWidget {
 
 class _SearchAhadeesState extends State<SearchAhadees> {
   final TextEditingController _searchController = TextEditingController();
+  List<Data> allHadithsList = [];
   List<Data> searchResults = [];
   bool isLoading = false;
 
-  // PROXY: Agar aap apna proxy use kar rahe hain to yahan change karein
-  final String proxyUrl = "https://cors-anywhere.herokuapp.com/";
-  final String apiKey =
-      "%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
-
-  // Books list for searching
-  final List<String> books = [
-    "sahih-bukhari",
-    "sahih-muslim",
-    "al-tirmidhi",
-    "abu-dawood",
-    "sunan-ibn-majah",
-    "sunan-nasai",
+  // Web APIs List
+  final List<String> webUrls = [
+    "https://hadith-proxy-mpc6.vercel.app/bukhari-hadiths",
+    "https://hadith-proxy-mpc6.vercel.app/muslim-hadiths",
+    "https://hadith-proxy-mpc6.vercel.app/tirmidhi-hadiths",
+    "https://hadith-proxy-mpc6.vercel.app/abudowood-hadiths",
   ];
 
-  Future<void> searchHadithWeb(String query) async {
-    if (query.isEmpty) return;
+  @override
+  void initState() {
+    super.initState();
+    loadInitialData();
+  }
 
-    setState(() {
-      isLoading = true;
-      searchResults = [];
-    });
+  // Main Loader (Mobile vs Web)
+  Future<void> loadInitialData() async {
+    setState(() => isLoading = true);
+    if (kIsWeb) {
+      await loadFromWeb();
+    } else {
+      await loadFromMobileStorage();
+    }
+    setState(() => isLoading = false);
+  }
 
+  // MOBILE: Load from Local JSON
+  Future<void> loadFromMobileStorage() async {
+    List<String> fileNames = [
+      "sahih-bukhari.json",
+      "sahih-muslim.json",
+      "al-tirmidhi.json",
+      "abu-dawood.json",
+      "ibn-e-majah.json",
+      "sunan-nasai.json",
+    ];
     try {
-      List<Data> tempResults = [];
-
-      // Loop through books to find the specific hadith number
-      for (String book in books) {
-        String apiUrl =
-            "https://hadithapi.com/api/hadiths?apiKey=$apiKey&hadithNumber=$query&book=$book";
-
-        // Web context mein proxy lazmi hai
-        String finalUrl = kIsWeb ? proxyUrl + apiUrl : apiUrl;
-
-        print("Fetching from: $book..."); // Debugging
-
-        final response = await http.get(Uri.parse(finalUrl));
-
-        if (response.statusCode == 200) {
-          final Map<String, dynamic> decoded = jsonDecode(response.body);
-
-          // Hadith API ka search structure: decoded['hadiths']['data']
-          if (decoded['hadiths'] != null &&
-              decoded['hadiths']['data'] != null) {
-            List<dynamic> data = decoded['hadiths']['data'];
-
-            for (var item in data) {
-              tempResults.add(Data.fromJson(item));
-            }
-          }
-        } else {
-          print("Error in $book: ${response.statusCode}");
+      final dir = await getApplicationDocumentsDirectory();
+      for (String name in fileNames) {
+        final file = File("${dir.path}/$name");
+        if (await file.exists()) {
+          final content = await file.readAsString();
+          parseAndAddData(content);
         }
       }
-
-      setState(() {
-        searchResults = tempResults;
-        isLoading = false;
-      });
-
-      print("Total Found: ${searchResults.length}");
     } catch (e) {
-      print("Fatal Error: $e");
-      setState(() => isLoading = false);
+      print("Mobile Loading Error: $e");
+    }
+  }
+
+  // WEB: Load from APIs
+  Future<void> loadFromWeb() async {
+    try {
+      // Parallel loading for speed on web
+      final responses = await Future.wait(
+        webUrls.map((url) => http.get(Uri.parse(url))),
+      );
+      for (var response in responses) {
+        if (response.statusCode == 200) {
+          parseAndAddData(response.body);
+        }
+      }
+    } catch (e) {
+      print("Web Loading Error: $e");
+    }
+  }
+
+  // Helper to parse JSON (Works for both)
+  void parseAndAddData(String jsonString) {
+    final decoded = jsonDecode(jsonString);
+    // Agar data API se aa raha hai toh 'hadiths' key check karein, agar local file hai toh 'chapters'
+    if (decoded['hadiths'] != null) {
+      final List data = decoded['hadiths']['data'] ?? [];
+      allHadithsList.addAll(data.map((h) => Data.fromJson(h)).toList());
+    } else if (decoded['chapters'] != null) {
+      for (var chapter in decoded['chapters']) {
+        final List data = chapter['hadiths']?['data'] ?? [];
+        allHadithsList.addAll(data.map((h) => Data.fromJson(h)).toList());
+      }
+    }
+  }
+
+  void _runFilter(String enteredKeyword) {
+    if (enteredKeyword.isEmpty) {
+      setState(() => searchResults = []);
+    } else {
+      setState(() {
+        searchResults = allHadithsList
+            .where((h) => h.hadithNumber.toString().contains(enteredKeyword))
+            .toList();
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        title: const Text("Search All Hadiths"),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new),
+        ),
+        title: Text(
+          kIsWeb ? "Search Hadiths (Web)" : "Search Hadiths (Offline)",
+        ),
         backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         elevation: 0,
+        centerTitle: true,
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          Container(
+            color: Colors.white,
+            padding: const EdgeInsets.all(15.0),
             child: TextField(
               controller: _searchController,
+              onChanged: _runFilter,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                hintText: "Enter Hadith Number (e.g. 1)",
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () => searchHadithWeb(_searchController.text),
-                ),
+                hintText: "Enter Hadith Number...",
+                prefixIcon: const Icon(Icons.search, color: Colors.green),
+                filled: true,
+                fillColor: Colors.grey.shade100,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide.none,
                 ),
               ),
-              onSubmitted: (val) => searchHadithWeb(val),
             ),
           ),
-
           Expanded(
             child: isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(
+                    child: CircularProgressIndicator(color: Colors.green),
+                  )
+                : _searchController.text.isEmpty
+                ? const Center(child: Text("You didn't search yet"))
                 : searchResults.isEmpty
-                ? const Center(child: Text("No Data Found. Try searching '1'"))
+                ? const Center(child: Text("No Hadith Found"))
                 : ListView.builder(
                     itemCount: searchResults.length,
                     itemBuilder: (context, index) {
                       final hadith = searchResults[index];
-                      return Card(
-                        margin: const EdgeInsets.all(10),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                "Book: ${hadith.book?.bookName ?? 'N/A'}",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                              const Divider(),
-                              Text(
-                                hadith.hadithArabic ?? "",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'Arabic',
-                                ),
-                                textAlign: TextAlign.right,
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                hadith.hadithUrdu ?? "",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.green,
-                                ),
-                                textAlign: TextAlign.right,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
+                      return buildHadithCard(hadith);
                     },
                   ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildHadithCard(Data hadith) {
+    return Card(
+      color: Colors.white,
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: ExpansionTile(
+        shape: const Border(),
+        leading: CircleAvatar(
+          backgroundColor: Colors.green,
+          radius: 18,
+          child: Text(
+            hadith.hadithNumber.toString(),
+            style: const TextStyle(
+              fontSize: 10,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        title: Text(
+          hadith.hadithArabic ?? "",
+          textAlign: TextAlign.right,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Arabic',
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              hadith.hadithUrdu ?? "",
+              textAlign: TextAlign.right,
+              style: const TextStyle(fontSize: 13, color: Colors.green),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                hadith.hadithEnglish ?? "",
+                style: const TextStyle(fontSize: 11, color: Colors.grey),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              children: [
+                Text(
+                  hadith.hadithArabic ?? "",
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(fontSize: 22, height: 1.6),
+                ),
+                const Gap(10),
+                const Divider(),
+                const Gap(10),
+                Text(
+                  hadith.hadithUrdu ?? "",
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(fontSize: 17, color: Colors.black87),
+                ),
+                const Gap(15),
+                Text(
+                  hadith.hadithEnglish ?? "",
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(fontSize: 15, color: Colors.black54),
+                ),
+              ],
+            ),
           ),
         ],
       ),
