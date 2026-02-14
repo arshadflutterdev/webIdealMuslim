@@ -6,6 +6,7 @@ import 'package:muslim/Core/Screens/MainScreens/Quran/favscreen.dart';
 import 'package:muslim/Core/Screens/MainScreens/Quran/quran_surah.dart';
 import 'package:muslim/Core/Widgets/Buttons/iconbutton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QuranEMajeed extends StatefulWidget {
   const QuranEMajeed({super.key});
@@ -202,7 +203,11 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
               Gap(10),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                onPressed: () {},
+                onPressed: () async {
+                  if (!await launchUrl(_url)) {
+                    throw Exception('Could not launch $_url');
+                  }
+                },
                 child: Text(
                   "Ai Fiesta",
                   style: TextStyle(color: Colors.white, fontSize: 20),
