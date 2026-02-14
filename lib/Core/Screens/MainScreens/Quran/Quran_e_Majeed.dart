@@ -195,19 +195,25 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
           elevation: 0,
           backgroundColor: const Color(0xFFFCF8F6),
           centerTitle: true,
-          title: Text(
-            "Al-Qur’an",
-            style: kIsWeb
-                ? TextStyle(
-                    fontSize: isMobile ? height * 0.035 : height * 0.070,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF2F3E34),
-                  )
-                : TextStyle(
-                    fontSize: height * 0.040,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF2F3E34),
-                  ),
+          title: Row(
+            children: [
+              Text("Ai Faista"),
+
+              Text(
+                "Al-Qur’an",
+                style: kIsWeb
+                    ? TextStyle(
+                        fontSize: isMobile ? height * 0.035 : height * 0.070,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF2F3E34),
+                      )
+                    : TextStyle(
+                        fontSize: height * 0.040,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF2F3E34),
+                      ),
+              ),
+            ],
           ),
           actions: [
             // IconButton0(
