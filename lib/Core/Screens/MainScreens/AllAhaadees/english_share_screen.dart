@@ -278,7 +278,7 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                   height: 60,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: bgimages.length + 1,
+                    itemCount: kIsWeb ? 1 : bgimages.length + 1,
                     itemBuilder: (context, index) {
                       if (index == 0) {
                         return GestureDetector(
