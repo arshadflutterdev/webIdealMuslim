@@ -1079,7 +1079,7 @@ class _TasbeehState extends State<Tasbeeh> {
                             ),
                           )
                         : SizedBox.shrink(),
-                    Gap(height * 0.0044),
+                    Gap(height * 0.0190),
                     Expanded(
                       child: Container(
                         color: Color(0xffFFFDF1),
