@@ -290,7 +290,7 @@ class _SunananasaiHadithDetailsUrduState
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Hadith # ${item.hadithNumber}",
+                    " ${item.hadithNumber} حدیث #",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
 
@@ -300,7 +300,7 @@ class _SunananasaiHadithDetailsUrduState
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Arabic", style: TextStyle(fontSize: 18)),
+                      Text("عربی", style: TextStyle(fontSize: 18)),
                       Radio(
                         activeColor: Colors.green,
                         value: 1,
@@ -321,7 +321,7 @@ class _SunananasaiHadithDetailsUrduState
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("English", style: TextStyle(fontSize: 18)),
+                      Text("اردو", style: TextStyle(fontSize: 18)),
                       Radio(
                         activeColor: Colors.green,
                         value: 2,
@@ -343,7 +343,7 @@ class _SunananasaiHadithDetailsUrduState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Both (Arabic + English)",
+                        "دونوں (عربی + اردو)",
                         style: TextStyle(fontSize: 18),
                       ),
                       Radio(
@@ -382,7 +382,7 @@ class _SunananasaiHadithDetailsUrduState
                           ? (item.hadithArabic ?? "")
                           : "";
                       String englishData = (selected == 2 || selected == 3)
-                          ? (item.hadithEnglish ?? "")
+                          ? (item.hadithUrdu ?? "")
                           : "";
 
                       // 3. Design wali screen par move karein
@@ -398,7 +398,7 @@ class _SunananasaiHadithDetailsUrduState
                       );
                     },
                     child: const Text(
-                      "Design & Share", // Button ka naam change kar diya taake user ko pata chale
+                      "ڈیزائن اور شیئر کریں۔", // Button ka naam change kar diya taake user ko pata chale
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
@@ -408,7 +408,7 @@ class _SunananasaiHadithDetailsUrduState
                       Navigator.pop(context);
                     },
                     child: Text(
-                      "Cancel",
+                      "منسوخ کریں",
                       style: TextStyle(fontSize: 20, color: Colors.black26),
                     ),
                   ),
