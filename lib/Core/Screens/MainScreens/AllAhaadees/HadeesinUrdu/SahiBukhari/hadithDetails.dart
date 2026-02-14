@@ -289,7 +289,7 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Hadith # ${item.hadithNumber}",
+                    " ${item.hadithNumber} حدیث #",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
 
@@ -299,7 +299,7 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Arabic", style: TextStyle(fontSize: 18)),
+                      Text("عربی", style: TextStyle(fontSize: 18)),
                       Radio(
                         activeColor: Colors.green,
                         value: 1,
@@ -320,7 +320,7 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("English", style: TextStyle(fontSize: 18)),
+                      Text("اردو", style: TextStyle(fontSize: 18)),
                       Radio(
                         activeColor: Colors.green,
                         value: 2,
@@ -342,7 +342,7 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Both (Arabic + English)",
+                        "دونوں (عربی + اردو)",
                         style: TextStyle(fontSize: 18),
                       ),
                       Radio(
@@ -381,7 +381,7 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                           ? (item.hadithArabic ?? "")
                           : "";
                       String englishData = (selected == 2 || selected == 3)
-                          ? (item.hadithEnglish ?? "")
+                          ? (item.hadithUrdu ?? "")
                           : "";
 
                       // 3. Design wali screen par move karein
@@ -397,7 +397,7 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                       );
                     },
                     child: const Text(
-                      "Design & Share", // Button ka naam change kar diya taake user ko pata chale
+                      "ڈیزائن اور شیئر کریں۔", // Button ka naam change kar diya taake user ko pata chale
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
@@ -407,7 +407,7 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      "Cancel",
+                      "منسوخ کریں",
                       style: TextStyle(fontSize: 20, color: Colors.black26),
                     ),
                   ),
@@ -529,36 +529,6 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                                   icon: const Icon(Icons.copy),
                                 ),
 
-                                //                                 IconButton(
-                                //                                   onPressed: () async {
-                                //                                     final hadeesText =
-                                //                                         """
-
-                                // Hadith No: ${item.hadithNumber}
-                                // Status: ${item.status}
-
-                                // Arabic:
-                                // ${item.hadithArabic}
-
-                                // English Translation:
-                                // ${item.headingEnglish}
-
-                                // 🌙 Shared via muslim App – Be Connected with Allah
-                                // """;
-                                //                                     await Clipboard.setData(
-                                //                                       ClipboardData(text: hadeesText),
-                                //                                     );
-                                //                                     ScaffoldMessenger.of(context).showSnackBar(
-                                //                                       const SnackBar(
-                                //                                         content: Text(
-                                //                                           "Hadith copied to clipboard ✅",
-                                //                                         ),
-                                //                                         duration: Duration(seconds: 2),
-                                //                                       ),
-                                //                                     );
-                                //                                   },
-                                //                                   icon: const Icon(Icons.copy),
-                                //                                 ),
                                 const Spacer(),
                                 IconButton(
                                   onPressed: () {
