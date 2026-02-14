@@ -259,7 +259,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
             "Hadees",
             style: kIsWeb
                 ? TextStyle(
-                    fontSize: isMobile ? height * 0.040 : height * 0.080,
+                    fontSize: isMobile ? height * 0.040 : height * 0.070,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xFF2F3E34),
                   )
@@ -274,7 +274,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
         backgroundColor: const Color(0xFFFCF8F6),
         body: Column(
           children: [
-            Gap(isMobile ? 00 : 25),
+            Gap(isMobile ? 00 : 20),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -323,7 +323,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                               final String slug = book.bookSlug ?? "";
                               return SizedBox(
                                 // یہاں ہم چوڑائی (Width) فکس کریں گے تاکہ 3 کالمز بنیں
-                                height: isMobile ? 80 : 70,
+                                height: isMobile ? 80 : 90,
                                 width: isMobile
                                     ? (MediaQuery.of(context).size.width / 1) -
                                           15
