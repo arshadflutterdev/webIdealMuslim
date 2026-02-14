@@ -25,8 +25,7 @@ class MyApp extends StatelessWidget {
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
-      title:
-          'Ideal Muslim -Biggest Islamic App available for Billions of Muslim & non muslim',
+      title: 'Ideal Muslim',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
