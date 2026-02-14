@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:muslim/Core/Const/app_images.dart';
@@ -38,6 +39,8 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
 
   ScreenshotController screenshotController = ScreenshotController();
   dynamic selectedBgImage;
+  Uint8List? webImage;
+  File? _pickedFile;
   Color selectedTextColor = Colors.black;
   double fontSize = 24.0; // Default size
 
@@ -50,8 +53,21 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
   Future<void> _pickImageFromGallery() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
     if (pickedFile != null) {
-      setState(() => selectedBgImage = File(pickedFile.path));
+      if (kIsWeb) {
+        final bytes = await pickedFile.readAsBytes();
+        setState(() {
+          webImage = bytes;
+          selectedBgImage =
+              "web_custom"; // Yeh marker bataey ga ke web image use karni hai
+        });
+      } else {
+        setState(() {
+          _pickedFile = File(pickedFile.path);
+          selectedBgImage = _pickedFile; // Mobile ke liye File object
+        });
+      }
     }
   }
 
@@ -125,9 +141,19 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   image: DecorationImage(
-                    image: selectedBgImage is File
-                        ? FileImage(selectedBgImage) as ImageProvider
-                        : AssetImage(selectedBgImage),
+                    image:
+                        (kIsWeb &&
+                            selectedBgImage == "web_custom" &&
+                            webImage != null)
+                        ? MemoryImage(webImage!)
+                              as ImageProvider // Web Gallery ke liye
+                        : (selectedBgImage is File)
+                        ? FileImage(
+                            selectedBgImage as File,
+                          ) // Mobile Gallery ke liye
+                        : AssetImage(
+                            selectedBgImage.toString(),
+                          ), // Assets ke liye
                     fit: BoxFit.cover,
                   ),
                 ),
