@@ -30,11 +30,11 @@ class EnglishShareScreen extends StatefulWidget {
 
 class _EnglishShareScreenState extends State<EnglishShareScreen> {
   final List<String> bgimages = [
-    AppImages.rmbg1,
+    AppImages.rmbg5,
     AppImages.rmbg2,
     AppImages.rmbg3,
     AppImages.rmbg4,
-    AppImages.rmbg5,
+    AppImages.rmbg1,
   ];
 
   ScreenshotController screenshotController = ScreenshotController();
