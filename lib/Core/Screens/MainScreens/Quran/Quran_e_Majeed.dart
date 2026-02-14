@@ -197,8 +197,13 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
           centerTitle: true,
           title: Row(
             children: [
-              Text("Ai Faista"),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(),
+                onPressed: () {},
+                child: Text("AiFiesta"),
+              ),
 
+              Spacer(),
               Text(
                 "Al-Qur’an",
                 style: kIsWeb
@@ -213,6 +218,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
                         color: const Color(0xFF2F3E34),
                       ),
               ),
+              Spacer(),
             ],
           ),
           actions: [
