@@ -219,14 +219,14 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(
-                      "Shared via Digital Tasbeeh App",
-                      style: TextStyle(
-                        color: selectedTextColor.withOpacity(0.5),
-                        fontSize: 10,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
+                    // Text(
+                    //   "Shared via Digital Tasbeeh App",
+                    //   style: TextStyle(
+                    //     color: selectedTextColor.withOpacity(0.5),
+                    //     fontSize: 10,
+                    //     fontStyle: FontStyle.italic,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
