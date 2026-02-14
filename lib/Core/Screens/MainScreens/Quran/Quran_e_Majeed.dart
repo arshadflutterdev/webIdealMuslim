@@ -48,7 +48,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
     'Al-Ankabut',
     'Ar-Rum',
     'Luqman',
-    'As-Sajda',
+    'As-Sajdah',
     'Al-Ahzab',
     'Saba',
     'Fatir',
@@ -339,12 +339,15 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
                           canRequestFocus: false,
                           borderRadius: BorderRadius.circular(16),
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => QuranSurah(searchSurrah[index]),
-                              ),
-                            );
+                            Future.microtask(() {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      QuranSurah(searchSurrah[index]),
+                                ),
+                              );
+                            });
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -428,12 +431,14 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(16),
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => QuranSurah(searchSurrah[index]),
-                            ),
-                          );
+                          Future.microtask(() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => QuranSurah(searchSurrah[index]),
+                              ),
+                            );
+                          });
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
