@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:muslim/Core/Screens/MainScreens/Quran/favscreen.dart';
 import 'package:muslim/Core/Screens/MainScreens/Quran/quran_surah.dart';
 import 'package:muslim/Core/Widgets/Buttons/iconbutton.dart';
@@ -179,6 +180,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
     return false;
   }
 
+  final _url = Uri.parse("https://aifiesta.link/shikh");
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -197,10 +199,14 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
           centerTitle: true,
           title: Row(
             children: [
+              Gap(10),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                 onPressed: () {},
-                child: Text("AiFiesta"),
+                child: Text(
+                  "Ai Fiesta",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
               ),
 
               Spacer(),
@@ -218,6 +224,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
                         color: const Color(0xFF2F3E34),
                       ),
               ),
+              Gap(10),
               Spacer(),
             ],
           ),
