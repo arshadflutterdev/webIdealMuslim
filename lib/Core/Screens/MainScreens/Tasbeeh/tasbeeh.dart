@@ -1021,7 +1021,7 @@ class _TasbeehState extends State<Tasbeeh> {
 
                     isMobile
                         ? Align(
-                            alignment: Alignment.bottomLeft,
+                            alignment: Alignment.topLeft,
                             child: Container(
                               width: 300,
                               // height: 100,
@@ -1079,7 +1079,7 @@ class _TasbeehState extends State<Tasbeeh> {
                             ),
                           )
                         : SizedBox.shrink(),
-                    Gap(height * 0.044),
+                    Gap(height * 0.0044),
                     Expanded(
                       child: Container(
                         color: Color(0xffFFFDF1),
