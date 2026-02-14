@@ -12,7 +12,7 @@ void main() async {
   if (!kIsWeb) {
     AdController().initialize();
   }
-  runApp(DevicePreview(builder: (context) => MyApp()));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
