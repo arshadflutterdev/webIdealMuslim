@@ -113,6 +113,13 @@ class _EnglishShareScreenState extends State<EnglishShareScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios_new),
+        ),
         title: const Text("Create Hadith Post"),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
