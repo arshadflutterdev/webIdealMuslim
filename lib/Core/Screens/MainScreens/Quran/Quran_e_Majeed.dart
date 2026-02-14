@@ -210,7 +210,9 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
                 },
                 child: Text(
                   "Ai Fiesta",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: isMobile
+                      ? TextStyle(color: Colors.white, fontSize: 15)
+                      : TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
 
@@ -219,7 +221,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
                 "Al-Qur’an",
                 style: kIsWeb
                     ? TextStyle(
-                        fontSize: isMobile ? height * 0.035 : height * 0.070,
+                        fontSize: isMobile ? height * 0.020 : height * 0.070,
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFF2F3E34),
                       )
