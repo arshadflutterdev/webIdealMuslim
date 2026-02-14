@@ -432,7 +432,7 @@ class _QuranSurahState extends State<QuranSurah> {
             widget.surahName,
             style: Apptextstyle.title.copyWith(
               color: Colors.white,
-              fontSize: isMobile ? 30 : widht * 20,
+              fontSize: isMobile ? widht * 0.020 : widht * 0.040,
             ),
           ),
         ),
