@@ -1018,56 +1018,64 @@ class _TasbeehState extends State<Tasbeeh> {
                         ],
                       ),
                     ),
-                    Gap(30),
 
                     isMobile
-                        ? Container(
-                            // height: 100,
-                            // width: width * 0.25,
-                            // color: Colors.blue,
-                            color: Color(0xffFFFDF1),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      counters[currentIndex].toString(),
-                                      style: Apptextstyle.title.copyWith(
-                                        color: Colors.black54,
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 58,
+                        ? Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Container(
+                              width: 300,
+                              // height: 100,
+                              // width: width * 0.25,
+                              // color: Colors.blue,
+                              color: Color(0xffFFFDF1),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Gap(10),
+                                      Text(
+                                        counters[currentIndex].toString(),
+                                        style: Apptextstyle.title.copyWith(
+                                          color: Colors.black54,
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 58,
+                                        ),
                                       ),
-                                    ),
-                                    const Text(
-                                      "/",
-                                      style: TextStyle(
-                                        fontSize: 40,
-                                        color: Colors.black38,
+                                      const Text(
+                                        "/",
+                                        style: TextStyle(
+                                          fontSize: 40,
+                                          color: Colors.black38,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      selectedNumbers[currentIndex].toString(),
-                                      style: Apptextstyle.title.copyWith(
-                                        color: Colors.black54,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 40,
+                                      Text(
+                                        selectedNumbers[currentIndex]
+                                            .toString(),
+                                        style: Apptextstyle.title.copyWith(
+                                          color: Colors.black54,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 40,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Text("Round :"),
-                                    Text(" $round"),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Gap(15),
+                                      const Text("Round :"),
+                                      Text(" $round"),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                         : SizedBox.shrink(),
