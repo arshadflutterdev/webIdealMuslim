@@ -43,7 +43,7 @@ class AnimatedBeadsCounterState extends State<AnimatedBeadsCounter> {
   }
 
   Path buildCurvePath(Size size) {
-    final double topMargin = baseBeadRadius + 14;
+    final double topMargin = baseBeadRadius + 8;
     final double width = MediaQuery.of(context).size.width;
     bool isMobile = width < 600;
     return Path()
