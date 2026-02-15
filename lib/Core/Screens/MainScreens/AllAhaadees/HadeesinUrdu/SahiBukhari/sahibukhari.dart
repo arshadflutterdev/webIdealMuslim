@@ -5,6 +5,8 @@ import 'package:http/http.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahiBukhari/hadithDetails.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadithDetails.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/onmobile_search.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/search_ahadees.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -188,10 +190,36 @@ class _BukhariUrduState extends State<BukhariUrdu> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = width < 600;
     return WillPopScope(
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () {
+                kIsWeb
+                    ? Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchAhadeesWeb(),
+                        ),
+                      )
+                    : Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchAhadees(),
+                        ),
+                      );
+              },
+              icon: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(Icons.search_rounded, size: isMobile ? 25 : 40),
+              ),
+            ),
+          ],
+
           backgroundColor: Colors.white,
 
           automaticallyImplyLeading: false,
