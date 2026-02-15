@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/english_share_screen.dart';
-import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/onmobile_search.dart';
-import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/search_ahadees.dart';
 import 'package:muslim/Data/Models/Sahhihmuslim/hadihtdetailmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -406,32 +404,8 @@ class _SahimuslimdetailsUrduState extends State<SahimuslimdetailsUrdu> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    final isMobile = width < 600;
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              kIsWeb
-                  ? Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SearchAhadeesWeb(),
-                      ),
-                    )
-                  : Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SearchAhadees()),
-                    );
-            },
-            icon: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.search_rounded, size: isMobile ? 25 : 40),
-            ),
-          ),
-        ],
-
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {

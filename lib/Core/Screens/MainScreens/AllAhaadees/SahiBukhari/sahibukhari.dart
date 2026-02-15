@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
-import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/onmobile_search.dart';
-import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/search_ahadees.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadithDetails.dart';
@@ -191,8 +189,6 @@ class _BukhariState extends State<Bukhari> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    final isMobile = width < 600;
     return WillPopScope(
       onWillPop: () async {
         AdController().tryShowAd();
@@ -204,29 +200,6 @@ class _BukhariState extends State<Bukhari> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          actions: [
-            IconButton(
-              onPressed: () {
-                kIsWeb
-                    ? Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SearchAhadeesWeb(),
-                        ),
-                      )
-                    : Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SearchAhadees(),
-                        ),
-                      );
-              },
-              icon: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(Icons.search_rounded, size: isMobile ? 25 : 40),
-              ),
-            ),
-          ],
 
           leading: IconButton(
             onPressed: () {
