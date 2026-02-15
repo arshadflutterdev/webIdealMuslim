@@ -250,7 +250,10 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                         ),
                       );
               },
-              icon: Icon(Icons.search_rounded),
+              icon: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(Icons.search_rounded, size: isMobile ? 25 : 40),
+              ),
             ),
           ],
           centerTitle: true,
