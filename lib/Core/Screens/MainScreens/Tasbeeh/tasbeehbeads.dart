@@ -59,7 +59,7 @@ class AnimatedBeadsCounterState extends State<AnimatedBeadsCounter> {
         size.width * 0.31,
         topMargin,
         size.width,
-        topMargin + 10,
+        topMargin + 14,
       );
   }
 
